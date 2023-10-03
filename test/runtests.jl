@@ -1,6 +1,3 @@
-using VEM
-using Test
+using SafeTestsets
 
-@testset "VEM.jl" begin
-    include("aqua.jl")
-end
+@time @safetestset "Code quality (Aqua.jl)" include("aqua.jl")

@@ -1,6 +1,4 @@
-using Test
 using Aqua
+using VEM
 
-@testset "Code quality (Aqua.jl)" begin
-    Aqua.test_all(VEM)
-end
+Aqua.test_all(VEM)
