@@ -5,9 +5,9 @@ using VEM
 @testset "Symmetries" begin
     @testset "GivenTranslationOfOrigin_WhenComputeVelocity_ThenSameVelocity" begin
         # ---- GIVEN ----
-        circulation = 1.0
-        source = [0.0, 0.0]
-        target = [1.0, 0.0]
+        circulation = 1 / 3
+        source = [0.3, 0.5]
+        target = [0.7, 1.1]
 
         translation = [1.0, 1.0]
         translated_source = source - translation
@@ -20,14 +20,14 @@ using VEM
         )
 
         # ---- THEN ----
-        @test velocity_without_translation == velocity_with_translation
+        @test velocity_without_translation ≈ velocity_with_translation
     end
 
     @testset "GivenRotationOfOrigin_WhenComputeVelocity_ThenSameSpeed" begin
         # ---- GIVEN ----
-        circulation = 1.0
-        source = [1.0, 0.5]
-        target = [0.75, 0.75]
+        circulation = 1 / 7
+        source = [0.5, 0.7]
+        target = [1.1, 1.7]
 
         rotation_angle = 30.0
         rotation_matrix = [
@@ -49,24 +49,24 @@ using VEM
 
     @testset "GivenSwitchSourceAndTarget_WhenComputeVelocity_ThenOppositeVelocity" begin
         # ---- GIVEN ----
-        circulation = 1.0
-        source = [0.0, 0.0]
-        target = [1.0, 0.0]
+        circulation = 1 / 11
+        source = [0.7, 1.1]
+        target = [1.3, 2.3]
 
         # ---- WHEN ----
         velocity_without_switch = compute_velocity(circulation, source, target)
         velocity_with_switch = compute_velocity(circulation, target, source)
 
         # ---- THEN ----
-        @test velocity_without_switch == -velocity_with_switch
+        @test velocity_without_switch ≈ -velocity_with_switch
     end
 end
 
 @testset "Singularity" begin
     @testset "GivenSourceEqualsTarget_WhenComputeVelocity_ThenVelocityEqualsNaN" begin
         # ---- GIVEN ----
-        circulation = 1.0
-        source = [0.5, 0.5]
+        circulation = 1 / 13
+        source = [0.3, 0.7]
         target = source
 
         # ---- WHEN ----
@@ -80,58 +80,58 @@ end
 @testset "Orthogonality" begin
     @testset "GivenCirculationSourceAndTarget_WhenComputeVelocity_ThenVelocityPerpendicularToDistance" begin
         # ---- GIVEN ----
-        circulation = 1.0
-        source = [0.25, 0.75]
-        target = [0.75, 0.25]
+        circulation = 1 / 17
+        source = [0.7, 1.1]
+        target = [1.3, 2.3]
 
         # ---- WHEN ----
         velocity = compute_velocity(circulation, source, target)
 
         # ---- THEN ----
-        @test dot(target - source, velocity) ≈ 0.0
+        @test dot(target, velocity) ≈ dot(source, velocity)
     end
 end
 
 @testset "Proportionality" begin
     @testset "GivenDoubleCirculation_WhenComputeVelocity_ThenDoubleVelocity" begin
         # ---- GIVEN ----
-        circulation = 3.0
-        source = [0.25, 0.75]
-        target = [0.75, 0.25]
+        circulation = 3 / 7
+        source = [1.3, 1.7]
+        target = [2.3, 2.9]
 
         # ---- WHEN ----
         velocity_single_circulation = compute_velocity(circulation, source, target)
         velocity_double_circulation = compute_velocity(2 * circulation, source, target)
 
         # ---- THEN ----
-        @test velocity_double_circulation == 2 * velocity_single_circulation
+        @test velocity_double_circulation ≈ 2 * velocity_single_circulation
     end
 
     @testset "GivenDoubleDistance_WhenComputeVelocity_ThenHalfVelocity" begin
         # ---- GIVEN ----
-        circulation = 3.0
-        source = [0.25, 0.75]
-        target = [0.75, 0.25]
+        circulation = 3 / 11
+        source = [0.3, 0.7]
+        target = [1.3, 2.3]
 
         # ---- WHEN ----
         velocity_single_distance = compute_velocity(circulation, source, target)
         velocity_double_distance = compute_velocity(circulation, 2 * source, 2 * target)
 
         # ---- THEN ----
-        @test velocity_double_distance == 0.5 * velocity_single_distance
+        @test velocity_double_distance ≈ 0.5 * velocity_single_distance
     end
 
     @testset "GivenUnitCirculationAndUnitDistance_WhenComputeVelocity_ThenSpeedEqualsReciprocalOfTwoPi" begin
         # ---- GIVEN ----
         circulation = 1.0
-        source = [0.0, 1.0]
-        target = [0.0, 2.0]
+        source = [3 / 7, 11 / 13]
+        target = source + [0.8, 0.6]
 
         # ---- WHEN ----
         velocity = compute_velocity(circulation, source, target)
 
         # ---- THEN ----
-        @test norm(velocity) == 1 / (2 * pi)
+        @test norm(velocity) ≈ 1 / (2 * pi)
     end
 end
 
