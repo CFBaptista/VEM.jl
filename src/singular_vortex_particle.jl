@@ -15,3 +15,9 @@ function compute_velocity(circulation, source, target)
     v = cross_2d(circulation, r) / (dot(r, r) * pi * 2)
     return v
 end
+
+function compute_velocity_gradient(circulation, source, target)
+    r = target - source
+    return circulation / (dot(r, r)^2 * pi * 2) *
+           [r[1]*r[2] -r[1]^2+r[2]^2; -r[1]^2+r[2]^2 -r[1]*r[2]]
+end
