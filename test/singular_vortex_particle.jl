@@ -63,33 +63,19 @@ using VEM
         end
     end
 
-    @testset "Singularity" begin
-        @testset "GivenSourceEqualsTarget_WhenComputeVelocity_ThenVelocityEqualsNaN" begin
+    @testset "Orientation" begin
+        @testset "GivenPositveHorizontalDistanceAndZeroVerticalDistance_WhenComputeVelocity_ThenZeroHorizontalVelocityAndPositveVerticalVelocity" begin
             # ---- GIVEN ----
-            circulation = 1 / 13
-            source = [0.3, 0.7]
-            target = source
+            circulation = 1.0
+            source = [3 / 7, 11 / 13]
+            target = source + [3, 0]
 
             # ---- WHEN ----
             velocity = compute_velocity(circulation, source, target)
 
             # ---- THEN ----
-            @test all(x -> isnan(x), velocity)
-        end
-    end
-
-    @testset "Orthogonality" begin
-        @testset "GivenCirculationSourceAndTarget_WhenComputeVelocity_ThenVelocityPerpendicularToDistance" begin
-            # ---- GIVEN ----
-            circulation = 1 / 17
-            source = [0.7, 1.1]
-            target = [1.3, 2.3]
-
-            # ---- WHEN ----
-            velocity = compute_velocity(circulation, source, target)
-
-            # ---- THEN ----
-            @test dot(target, velocity) ≈ dot(source, velocity)
+            @test isapprox(velocity[1], 0; atol=1e-12)
+            @test velocity[2] > 0
         end
     end
 
@@ -136,6 +122,36 @@ using VEM
         end
     end
 
+    @testset "Orthogonality" begin
+        @testset "GivenCirculationSourceAndTarget_WhenComputeVelocity_ThenVelocityPerpendicularToDistance" begin
+            # ---- GIVEN ----
+            circulation = 1 / 17
+            source = [0.7, 1.1]
+            target = [1.3, 2.3]
+
+            # ---- WHEN ----
+            velocity = compute_velocity(circulation, source, target)
+
+            # ---- THEN ----
+            @test dot(target, velocity) ≈ dot(source, velocity)
+        end
+    end
+
+    @testset "Singularity" begin
+        @testset "GivenSourceEqualsTarget_WhenComputeVelocity_ThenVelocityEqualsNaN" begin
+            # ---- GIVEN ----
+            circulation = 1 / 13
+            source = [0.3, 0.7]
+            target = source
+
+            # ---- WHEN ----
+            velocity = compute_velocity(circulation, source, target)
+
+            # ---- THEN ----
+            @test all(x -> isnan(x), velocity)
+        end
+    end
+
     @testset "Return type" begin
         @testset "GivenFloatAndFloatVectorInputs_WhenComputeVelocity_ThenReturnTypeIsConcrete" begin
             # ---- GIVEN ----
@@ -169,6 +185,28 @@ end
 
 @testset "Velocity gradient" begin
     @testset "Symmetries" begin
+        @testset "GivenTranslationOfOrigin_WhenComputeVelocityGradient_ThenSameVelocityGradient" begin
+            # ---- GIVEN ----
+            circulation = 1 / 3
+            source = [0.3, 0.5]
+            target = [0.7, 1.1]
+
+            translation = [1.0, 1.0]
+            translated_source = source - translation
+            translated_target = target - translation
+
+            # ---- WHEN ----
+            velocity_gradient_without_translation = compute_velocity_gradient(
+                circulation, source, target
+            )
+            velocity_gradient_with_translation = compute_velocity_gradient(
+                circulation, translated_source, translated_target
+            )
+
+            # ---- THEN ----
+            @test velocity_gradient_without_translation ≈ velocity_gradient_with_translation
+        end
+
         @testset "GivenCirculationSourceAndTarget_WhenComputeVelocityGradient_ThenSymmetricVelocityGradient" begin
             # ---- GIVEN ----
             circulation = 5 / 7
