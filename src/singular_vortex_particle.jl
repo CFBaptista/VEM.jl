@@ -26,3 +26,8 @@ function compute_vorticity(circulation, source, target)
     r = target - source
     return zero(circulation) / dot(r, r)
 end
+
+function compute_vorticity_gradient(circulation, source, target)
+    r = target - source
+    return fill(zero(circulation), (2, 2)) / dot(r, r)
+end

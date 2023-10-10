@@ -459,3 +459,65 @@ end
         end
     end
 end
+
+@testset "Vorticity gradient" begin
+    @testset "Singularity" begin
+        @testset "GivenCirculationUnequalToZeroAndSourceUnequalToTarget_WhenComputeVorticityGradient_ThenZeroVorticityGradient" begin
+            # ---- GIVEN ----
+            circulation = 1 / pi
+            source = [3 / pi, 5 / pi]
+            target = [7 / pi, 11 / pi]
+
+            # ---- WHEN ----
+            vorticity_gradient = compute_vorticity_gradient(circulation, source, target)
+
+            # ---- THEN ----
+            @test all(x -> isapprox(x, 0; atol=1e-12), vorticity_gradient)
+        end
+
+        @testset "GivenSourceEqualsTarget_WhenComputeVorticityGradient_ThenVorticityGradientEqualsNaN" begin
+            # ---- GIVEN ----
+            circulation = 1 / 13
+            source = [0.3, 0.7]
+            target = source
+
+            # ---- WHEN ----
+            vorticity_gradient = compute_vorticity_gradient(circulation, source, target)
+
+            # ---- THEN ----
+            @test all(x -> isnan(x), vorticity_gradient)
+        end
+    end
+
+    @testset "Return type" begin
+        @testset "GivenFloatAndFloatVectorInputs_WhenComputeVorticityGradient_ThenReturnTypeIsConcrete" begin
+            # ---- GIVEN ----
+            circulation_types = (Float16, Float32, Float64)
+            source_types = (Vector{x} for x in circulation_types)
+            target_types = (Vector{x} for x in circulation_types)
+
+            # ---- WHEN ---- / ---- THEN ----
+            for ctype in circulation_types, stype in source_types, ttype in target_types
+                @test isconcretetype(
+                    Core.Compiler.return_type(
+                        compute_vorticity_gradient, Tuple{ctype,stype,ttype}
+                    ),
+                )
+            end
+        end
+
+        @testset "GivenFloatAndFloatVectorInputs_WhenComputeVorticityGradient_ThenReturnTypeEqualsPromoteType" begin
+            # ---- GIVEN ----
+            circulation_types = (Float16, Float32, Float64)
+            source_types = (Vector{x} for x in circulation_types)
+            target_types = (Vector{x} for x in circulation_types)
+
+            # ---- WHEN ---- / ---- THEN ----
+            for ctype in circulation_types, stype in source_types, ttype in target_types
+                @test Core.Compiler.return_type(
+                    compute_vorticity_gradient, Tuple{ctype,stype,ttype}
+                ) == Matrix{promote_type(ctype, eltype(stype), eltype(ttype))}
+            end
+        end
+    end
+end
