@@ -231,7 +231,7 @@ end
 
             # ---- THEN ----
             @test velocity_gradient[2, 1] ≈ velocity_gradient[1, 2]
-            @test isapprox(velocity_gradient[2, 1], 0, atol=1e-12)
+            @test isapprox(velocity_gradient[2, 1], 0; atol=1e-12)
         end
 
         @testset "GivenAbsHorizontalDistanceLargerThanAbsVerticalDistance_WhenComputeVelocityGradient_ThenOffDiagonalVelocityGradientsAreNegative" begin
@@ -395,6 +395,66 @@ end
                 @test Core.Compiler.return_type(
                     compute_velocity_gradient, Tuple{ctype,stype,ttype}
                 ) == Matrix{promote_type(ctype, eltype(stype), eltype(ttype))}
+            end
+        end
+    end
+end
+
+@testset "Vorticity" begin
+    @testset "Singularity" begin
+        @testset "GivenCirculationUnequalToZeroAndSourceUnequalToTarget_WhenComputeVorticity_ThenZeroVorticity" begin
+            # ---- GIVEN ----
+            circulation = 1 / pi
+            source = [3 / pi, 5 / pi]
+            target = [7 / pi, 11 / pi]
+
+            # ---- WHEN ----
+            vorticity = compute_vorticity(circulation, source, target)
+
+            # ---- THEN ----
+            @test isapprox(vorticity, 0; atol=1e-12)
+        end
+
+        @testset "GivenSourceEqualsTarget_WhenComputeVorticity_ThenVorticityEqualsNaN" begin
+            # ---- GIVEN ----
+            circulation = 1 / 13
+            source = [0.3, 0.7]
+            target = source
+
+            # ---- WHEN ----
+            vorticity = compute_vorticity(circulation, source, target)
+
+            # ---- THEN ----
+            @test isnan(vorticity)
+        end
+    end
+
+    @testset "Return type" begin
+        @testset "GivenFloatAndFloatVectorInputs_WhenComputeVorticity_ThenReturnTypeIsConcrete" begin
+            # ---- GIVEN ----
+            circulation_types = (Float16, Float32, Float64)
+            source_types = (Vector{x} for x in circulation_types)
+            target_types = (Vector{x} for x in circulation_types)
+
+            # ---- WHEN ---- / ---- THEN ----
+            for ctype in circulation_types, stype in source_types, ttype in target_types
+                @test isconcretetype(
+                    Core.Compiler.return_type(compute_vorticity, Tuple{ctype,stype,ttype})
+                )
+            end
+        end
+
+        @testset "GivenFloatAndFloatVectorInputs_WhenComputeVorticity_ThenReturnTypeEqualsPromoteType" begin
+            # ---- GIVEN ----
+            circulation_types = (Float16, Float32, Float64)
+            source_types = (Vector{x} for x in circulation_types)
+            target_types = (Vector{x} for x in circulation_types)
+
+            # ---- WHEN ---- / ---- THEN ----
+            for ctype in circulation_types, stype in source_types, ttype in target_types
+                @test Core.Compiler.return_type(
+                    compute_vorticity, Tuple{ctype,stype,ttype}
+                ) == promote_type(ctype, eltype(stype), eltype(ttype))
             end
         end
     end

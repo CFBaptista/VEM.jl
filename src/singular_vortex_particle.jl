@@ -18,6 +18,11 @@ end
 
 function compute_velocity_gradient(circulation, source, target)
     r = target - source
-    return circulation / (dot(r, r)^2 * pi * 2) *
-           [r[1]*r[2] -r[1]^2+r[2]^2; -r[1]^2+r[2]^2 -r[1]*r[2]]
+    rx, ry = r
+    return circulation / (dot(r, r)^2 * pi * 2) * [rx*ry -rx^2+ry^2; -rx^2+ry^2 -rx*ry]
+end
+
+function compute_vorticity(circulation, source, target)
+    r = target - source
+    return zero(circulation) / dot(r, r)
 end
