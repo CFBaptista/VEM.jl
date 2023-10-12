@@ -335,7 +335,9 @@ end
             velocity_gradient = compute_velocity_gradient(circulation, source, target)
 
             # ---- THEN ----
-            @test isapprox(dot(velocity_gradient[:, 1], velocity_gradient[:, 2]), 0; atol=1e-12)
+            @test isapprox(
+                dot(velocity_gradient[:, 1], velocity_gradient[:, 2]), 0; atol=1e-12
+            )
         end
 
         @testset "GivenUnitCirculationUnitHorizontalDistanceAndUnitVerticalDistance_WhenComputeVelocityGradient_ThenAbsDiagonalEqualReciprocalOfEightPi" begin

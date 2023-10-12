@@ -20,7 +20,7 @@ A counter-clockwise `circulation` is considered positive.
 See also [`compute_velocity_gradient`](@ref), [`compute_vorticity`](@ref), [`compute_vorticity_gradient`](@ref).
 
 # Examples
-```
+```jldoctest
 julia> circulation = 1.0
 1.0
 
@@ -56,7 +56,7 @@ A counter-clockwise `circulation` is considered positive.
 See also [`compute_velocity`](@ref), [`compute_vorticity`](@ref), [`compute_vorticity_gradient`](@ref).
 
 # Examples
-```
+```jldoctest
 julia> circulation = 1.0
 1.0
 
@@ -92,7 +92,7 @@ A counter-clockwise `circulation` is considered positive.
 See also [`compute_velocity`](@ref), [`compute_velocity_gradient`](@ref), [`compute_vorticity_gradient`](@ref).
 
 # Examples
-```
+```jldoctest
 julia> circulation = 1.0
 1.0
 
@@ -125,7 +125,7 @@ A counter-clockwise `circulation` is considered positive.
 See also [`compute_velocity`](@ref), [`compute_velocity_gradient`](@ref), [`compute_vorticity`](@ref).
 
 # Examples
-```
+```jldoctest
 julia> circulation = 1.0
 1.0
 
