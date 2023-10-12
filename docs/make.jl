@@ -10,7 +10,7 @@ makedocs(;
     format=Documenter.HTML(;
         canonical="https://CFBaptista.github.io/VEM.jl/stable/", assets=String[]
     ),
-    pages=["Home" => "index.md"],
+    pages=["Home" => "index.md", "API" => "pages/api.md"],
 )
 
 deploydocs(; repo="github.com/CFBaptista/VEM.jl", push_preview=true)
