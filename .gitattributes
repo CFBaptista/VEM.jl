@@ -1,0 +1,9 @@
+# Mark binary files
+*.jld  binary
+*.jld2 binary
+
+# Mark text files
+*.jl text eol=lf
+*.md text eol=lf
+*.toml text eol=lf
+*.yml text eol=lf
