@@ -1,9 +1,11 @@
-using VEM
-using Test
 using Aqua
 using JET
+using Test
+using TestItemRunner
 
-@testset "VEM.jl" begin
+using VEM
+
+@testset "Coding standards" begin
     @testset "Code quality (Aqua.jl)" begin
         Aqua.test_all(VEM)
     end
@@ -11,3 +13,5 @@ using JET
         JET.test_package(VEM; target_defined_modules = true)
     end
 end
+
+@run_package_tests
