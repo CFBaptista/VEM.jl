@@ -4,6 +4,8 @@
 
 # Mark text files
 *.jl text eol=lf
+*.jmd text eol=lf
 *.md text eol=lf
+*.qmd text eol=lf
 *.toml text eol=lf
 *.yml text eol=lf
