@@ -1,7 +1,8 @@
+using Test
+
 using Aqua
 using JET
 using JuliaFormatter
-using Test
 using TestItemRunner
 
 using VEM
