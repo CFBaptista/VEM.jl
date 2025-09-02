@@ -1,12 +1,11 @@
 """
     GaussianVortexBlob(circulation::Scalar, center::SA.SVector{Dimension, Scalar}, radius::Scalar) where {Dimension, Scalar}
 
-A smooth vortex blob with a Gaussian mollifier kernel. It is characterized by the amount of
-circulation it carries, a position and a finite core radius.
+A smooth vortex blob with a Gaussian distribution of vorticity. It is characterized by the amount of circulation it carries, a position and a finite core radius.
 
 # Arguments
 - `circulation::Scalar`: The circulation strength of the vortex blob.
-- `center::SA.SVector{Dimension, Scalar}`: The position of the blob center.
+- `center::SA.SVector{Dimension, Scalar}`: The position of the blob.
 - `radius::Scalar`: The core radius of the blob.
 
 # Returns
@@ -19,9 +18,20 @@ mutable struct GaussianVortexBlob{Dimension,Scalar} <: AbstractVortexBlob{Dimens
 end
 
 """
-    GaussianVortexBlob(circulation, center::Tuple, radius)
+    GaussianVortexBlob(circulation, center, radius)
 
-Construct a `GaussianVortexBlob` when `center` is supplied as a type that is convertible to SA.SVector.
+Fallback constructor for `GaussianVortexBlob` that works if:
+    - `circulation::Scalar`
+    - `SA.SVector(Tuple(center))::SVector{Dimension, Scalar}`
+    - `radius::Scalar`
+
+# Arguments
+- `circulation`: The circulation strength of the vortex blob.
+- `center`: The position of the blob.
+- `radius`: The core radius of the blob.
+
+# Returns
+A `GaussianVortexBlob` instance.
 """
 function GaussianVortexBlob(circulation, center, radius)
     return GaussianVortexBlob(circulation, SA.SVector(Tuple(center)), radius)
@@ -30,16 +40,32 @@ end
 """
     GaussianVortexBlob(circulation, center::Tuple, radius)
 
-Construct a `GaussianVortexBlob` when `center` is supplied as Tuple.
+Constructor for `GaussianVortexBlob` when `center` is supplied as Tuple.
+
+# Arguments
+- `circulation`: The circulation strength of the vortex blob.
+- `center::Tuple`: The position of the blob.
+- `radius`: The core radius of the blob.
+
+# Returns
+A `GaussianVortexBlob` instance.
 """
 function GaussianVortexBlob(circulation, center::Tuple, radius)
     return GaussianVortexBlob(circulation, SA.SVector(center), radius)
 end
 
 """
-    GaussianVortexBlob(circulation, center::Tuple, radius)
+    GaussianVortexBlob(circulation, center::SA.SVector, radius)
 
-Construct a `GaussianVortexBlob` when `center` is supplied as SA.SVector.
+Constructor for `GaussianVortexBlob` when `center` is supplied as SA.SVector.
+
+# Arguments
+- `circulation`: The circulation strength of the vortex blob.
+- `center::SA.SVector`: The position of the blob.
+- `radius`: The core radius of the blob.
+
+# Returns
+A `GaussianVortexBlob` instance.
 """
 function GaussianVortexBlob(circulation, center::SA.SVector, radius)
     return GaussianVortexBlob(circulation, center, radius)
@@ -48,14 +74,14 @@ end
 """
     induced_velocity(blob::GaussianVortexBlob{2}, target)
 
-Compute the velocity induced at a target point by a 2D Gaussian vortex blob.
+Compute the velocity induced at `target` due to a 2D Gaussian vortex blob.
 
 # Arguments
 - `blob::GaussianVortexBlob{2}`: The vortex blob.
 - `target`: The target position.
 
 # Returns
-The induced velocity at the target position.
+The induced velocity at `target`.
 """
 function induced_velocity(blob::GaussianVortexBlob{2}, target)
     distance_squared, radius_squared, unscaled_influence, scaler, small_value = induced_velocity_setup_helper(
@@ -94,14 +120,14 @@ end
 """
     induced_vorticity(blob::GaussianVortexBlob{2}, target)
 
-Compute the vorticity induced at a target point by a 2D Gaussian vortex blob.
+Compute the vorticity induced at `target` due to a 2D Gaussian vortex blob.
 
 # Arguments
 - `blob::GaussianVortexBlob{2}`: The vortex blob.
 - `target`: The target position.
 
 # Returns
-The induced vorticity at the target position.
+The induced vorticity at `target`.
 """
 function induced_vorticity(blob::GaussianVortexBlob{2}, target)
     distance = target - blob.center
