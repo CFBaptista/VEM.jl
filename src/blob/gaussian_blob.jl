@@ -12,28 +12,37 @@ A smooth vortex blob with a Gaussian distribution of vorticity. It is characteri
 A `GaussianVortexBlob` instance.
 """
 mutable struct GaussianVortexBlob{Dimension,Scalar} <: AbstractVortexBlob{Dimension,Scalar}
-    circulation::Scalar
+    circulation::Union{Scalar,SA.SVector{Dimension,Scalar}}
     center::SA.SVector{Dimension,Scalar}
     radius::Scalar
+    function GaussianVortexBlob{Dimension,Scalar}(
+        circulation, center, radius
+    ) where {Dimension,Scalar}
+        if (length(circulation) == 1 && Dimension == 2) || length(circulation) == 3
+            return new{Dimension,Scalar}(circulation, center, radius)
+        end
+        throw(
+            ArgumentError(
+                "A vortex blob is either 2D or 3D.\n    - In 2D: `circulation` is a scalar and `center` is a 2-vector.\n    - In 3D: `circulation` and `center` are both 3-vectors.",
+            ),
+        )
+    end
 end
 
 """
-    GaussianVortexBlob(circulation, center, radius)
+    GaussianVortexBlob(circulation, center::AbstractVector, radius)
 
-Fallback constructor for `GaussianVortexBlob` that works if:
-    - `circulation::Scalar`
-    - `SA.SVector(Tuple(center))::SVector{Dimension, Scalar}`
-    - `radius::Scalar`
+Constructor for `GaussianVortexBlob` when `center` is supplied as <:AbstractVector.
 
 # Arguments
 - `circulation`: The circulation strength of the vortex blob.
-- `center`: The position of the blob.
+- `center::AbstractVector`: The position of the blob.
 - `radius`: The core radius of the blob.
 
 # Returns
 A `GaussianVortexBlob` instance.
 """
-function GaussianVortexBlob(circulation, center, radius)
+function GaussianVortexBlob(circulation, center::AbstractVector, radius)
     return GaussianVortexBlob(circulation, SA.SVector(Tuple(center)), radius)
 end
 
@@ -68,7 +77,7 @@ Constructor for `GaussianVortexBlob` when `center` is supplied as SA.SVector.
 A `GaussianVortexBlob` instance.
 """
 function GaussianVortexBlob(circulation, center::SA.SVector, radius)
-    return GaussianVortexBlob(circulation, center, radius)
+    return GaussianVortexBlob{length(center),eltype(center)}(circulation, center, radius)
 end
 
 """

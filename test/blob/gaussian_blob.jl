@@ -46,7 +46,7 @@ end
 
     # WHEN / THEN
 
-    @test_throws StackOverflowError blob = GaussianVortexBlob(circulation, center, radius)
+    @test_throws MethodError blob = GaussianVortexBlob(circulation, center, radius)
 end
 
 @testsnippet GaussianVortexBlob2D begin
