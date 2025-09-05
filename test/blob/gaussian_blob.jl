@@ -49,6 +49,30 @@ end
     @test_throws MethodError blob = GaussianVortexBlob(circulation, center, radius)
 end
 
+@testitem "Cannot create blob with scalar circulation and 3D position" begin
+    # GIVEN
+
+    circulation = 0.23024673335450663
+    center = [0.24312257710823948, 0.5346144057331608, 0.5074864635308087]
+    radius = 0.5829689502123744
+
+    # WHEN / THEN
+
+    @test_throws ArgumentError blob = GaussianVortexBlob(circulation, center, radius)
+end
+
+@testitem "Cannot create blob with 3D circulation and 2D position" begin
+    # GIVEN
+
+    circulation = [0.11337262536359693, 0.28145956014569606, 0.4192211746213216]
+    center = [0.8164371245291423, 0.3580579843840971, 0.5074864635308087]
+    radius = 0.6630371529700086
+
+    # WHEN / THEN
+
+    @test_throws MethodError blob = GaussianVortexBlob(circulation, center, radius)
+end
+
 @testsnippet GaussianVortexBlob2D begin
     expected_dimension = 2
     expected_scalar = Float64
@@ -58,16 +82,11 @@ end
 
     target = [0.37910466032881385, 0.25319562281414765]
 
-    function create_blob()
-        blob = GaussianVortexBlob(expected_circulation, expected_center, expected_radius)
-        return blob
-    end
+    blob = GaussianVortexBlob(expected_circulation, expected_center, expected_radius)
 end
 
 @testitem "Get vortex blob dimension (2D)" setup = [GaussianVortexBlob2D] begin
     # GIVEN
-
-    blob = create_blob()
 
     # WHEN
 
@@ -81,8 +100,6 @@ end
 @testitem "Get vortex blob scalar (2D)" setup = [GaussianVortexBlob2D] begin
     # GIVEN
 
-    blob = create_blob()
-
     # WHEN
 
     scalar = blob_scalar(blob)
@@ -94,8 +111,6 @@ end
 
 @testitem "Get vortex blob circulation (2D)" setup = [GaussianVortexBlob2D] begin
     # GIVEN
-
-    blob = create_blob()
 
     # WHEN
 
@@ -109,7 +124,6 @@ end
 @testitem "Update vortex blob circulation (2D)" setup = [GaussianVortexBlob2D] begin
     # GIVEN
 
-    blob = create_blob()
     new_circulation = 1.0
 
     # WHEN
@@ -124,8 +138,6 @@ end
 @testitem "Get vortex blob center (2D)" setup = [GaussianVortexBlob2D] begin
     # GIVEN
 
-    blob = create_blob()
-
     # WHEN
 
     center = blob_center(blob)
@@ -138,7 +150,6 @@ end
 @testitem "Update vortex blob center (2D)" setup = [GaussianVortexBlob2D] begin
     # GIVEN
 
-    blob = create_blob()
     new_center = (0.5, 0.5)
 
     # WHEN
@@ -153,8 +164,6 @@ end
 @testitem "Get vortex blob radius (2D)" setup = [GaussianVortexBlob2D] begin
     # GIVEN
 
-    blob = create_blob()
-
     # WHEN
 
     radius = blob_radius(blob)
@@ -167,7 +176,6 @@ end
 @testitem "Update vortex blob radius (2D)" setup = [GaussianVortexBlob2D] begin
     # GIVEN
 
-    blob = create_blob()
     new_radius = 1.0
 
     # WHEN
@@ -182,7 +190,6 @@ end
 @testitem "Induced velocity is proportional to circulation (2D)" setup = [GaussianVortexBlob2D] begin
     # GIVEN
 
-    blob = create_blob()
     factor = 0.9545476135575189
 
     # WHEN
@@ -196,12 +203,29 @@ end
     @test isapprox(factor * old_velocity, new_velocity; rtol=1e-15)
 end
 
+@testitem "Positive circulation induces counter-clockwise velocity (2D)" setup = [
+    GaussianVortexBlob2D
+] begin
+    # GIVEN
+
+    target = blob_center(blob) + [0.5, 0.5]
+    circulation_sign = sign(blob_circulation(blob))
+
+    # WHEN
+
+    velocity = induced_velocity(blob, target)
+
+    # THEN
+
+    @test circulation_sign * velocity[1] < 0
+    @test circulation_sign * velocity[2] > 0
+end
+
 @testitem "Induced velocity magnitude away from center is larger than zero (2D)" setup = [
     GaussianVortexBlob2D
 ] begin
     # GIVEN
 
-    blob = create_blob()
     target = blob_center(blob) + [0.05857383934234839, 0.4087109412556016]
 
     # WHEN
@@ -219,7 +243,6 @@ end
 ] begin
     # GIVEN
 
-    blob = create_blob()
     direction = [0.606593953699998, 0.7950118082988482]
     target_1 = blob_center(blob) + 3 * direction
     target_2 = blob_center(blob) + 4 * direction
@@ -243,7 +266,6 @@ end
 @testitem "Induced velocity is perpendicular to distance vector (2D)" setup = [GaussianVortexBlob2D] begin
     # GIVEN
 
-    blob = create_blob()
     target = blob_center(blob) + [0.09942340947611172, 0.5730399377638032]
 
     # WHEN
@@ -261,7 +283,6 @@ end
 ] begin
     # GIVEN
 
-    blob = create_blob()
     direction = [0.9660708051919009, 0.25827736903544635]
     target_1 = blob_center(blob) + 0.5 * blob_radius(blob) * direction
     target_2 = blob_center(blob) + 1.0 * blob_radius(blob) * direction
@@ -281,8 +302,6 @@ end
 @testitem "Induced velocity at the center is finite (2D)" setup = [GaussianVortexBlob2D] begin
     # GIVEN
 
-    blob = create_blob()
-
     # WHEN
 
     velocity = induced_velocity(blob, blob_center(blob))
@@ -294,8 +313,6 @@ end
 
 @testitem "Induced velocity at the center is zero (2D)" setup = [GaussianVortexBlob2D] begin
     # GIVEN
-
-    blob = create_blob()
 
     # WHEN
 
@@ -326,10 +343,28 @@ end
     @test isapprox(VEM.LA.norm(velocity), expected_velocity_magnitude; rtol=1e-15)
 end
 
+@testitem "Induced velocity type is the expected type" begin
+    T = (Float16, Float32, Float64, BigFloat)
+
+    for T1 in T
+        for T2 in T
+            circulation = rand(T1)
+            center = rand(T1, 2)
+            radius = rand(T1)
+
+            blob = GaussianVortexBlob(circulation, center, radius)
+            target = rand(T2, 2)
+            scalar = promote_type(T1, T2)
+
+            # @test typeof(induced_velocity(blob, target)) == VEM.SA.SVector{2, scalar}
+            @test induced_velocity(blob, target) isa VEM.SA.SVector{2, scalar}
+        end
+    end
+end
+
 @testitem "Induced vorticity is proportional to circulation (2D)" setup = [GaussianVortexBlob2D] begin
     # GIVEN
 
-    blob = create_blob()
     factor = 0.14350917205481295
 
     # WHEN
@@ -348,7 +383,6 @@ end
 ] begin
     # GIVEN
 
-    blob = create_blob()
     expected_vorticity = blob_circulation(blob) / (2 * pi * blob_radius(blob)^2)
 
     # WHEN
@@ -364,8 +398,6 @@ end
     GaussianVortexBlob2D
 ] begin
     # GIVEN
-
-    blob = create_blob()
 
     direction = [0.8245975544929167, 0.5657197832180709]
 
@@ -389,29 +421,28 @@ end
     @test isapprox(vorticity_2 / vorticity_1, expected_ratio; rtol=1e-15)
 end
 
-@testitem "Positive circulation induces counter-clockwise velocity (2D)" setup = [
-    GaussianVortexBlob2D
-] begin
-    # GIVEN
+@testitem "Induced vorticity type is the expected type" begin
+    T = (Float16, Float32, Float64, BigFloat)
 
-    blob = create_blob()
-    target = blob_center(blob) + [0.5, 0.5]
-    circulation_sign = sign(blob_circulation(blob))
+    for T1 in T
+        for T2 in T
+            circulation = rand(T1)
+            center = rand(T1, 2)
+            radius = rand(T1)
 
-    # WHEN
+            blob = GaussianVortexBlob(circulation, center, radius)
+            target = rand(T2, 2)
+            scalar = promote_type(T1, T2)
 
-    velocity = induced_velocity(blob, target)
-
-    # THEN
-
-    @test circulation_sign * velocity[1] < 0
-    @test circulation_sign * velocity[2] > 0
+            # @test typeof(induced_velocity(blob, target)) == VEM.SA.SVector{2, scalar}
+            @test induced_vorticity(blob, target) isa scalar
+        end
+    end
 end
 
 @testitem "Induced velocity is consistent with induced vorticity" setup = [GaussianVortexBlob2D] begin
     # GIVEN
 
-    blob = create_blob()
     target = blob_center(blob) + [0.7903753220899068, 0.20269405341897373]
     expected_vorticity = induced_vorticity(blob, target)
 
