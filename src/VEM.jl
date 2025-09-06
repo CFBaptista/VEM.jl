@@ -21,7 +21,7 @@ export GaussianVortexBlob
 export induced_velocity
 export induced_vorticity
 
-include("blob/biot_savart.jl")
-export biot_savart_sum
+include("blob/induction.jl")
+export induction_field_superposition
 
 end

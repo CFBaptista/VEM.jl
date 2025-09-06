@@ -17,7 +17,7 @@ end
 
     # WHEN
 
-    result = biot_savart_sum(induction, blob, target)
+    result = induction_field_superposition(induction, blob, target)
 
     # THEN
 
@@ -43,7 +43,7 @@ end
 
     # WHEN
 
-    result = biot_savart_sum(induction, blob, targets)
+    result = induction_field_superposition(induction, blob, targets)
 
     # THEN
 
@@ -69,7 +69,7 @@ end
 
     # WHEN
 
-    result = biot_savart_sum(induction, blobs, target)
+    result = induction_field_superposition(induction, blobs, target)
 
     # THEN
 
@@ -99,7 +99,7 @@ end
 
     # WHEN
 
-    result = biot_savart_sum(induction, blobs, targets)
+    result = induction_field_superposition(induction, blobs, targets)
 
     # THEN
 
