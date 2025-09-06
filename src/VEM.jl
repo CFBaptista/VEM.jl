@@ -1,6 +1,8 @@
 module VEM
 
 import LinearAlgebra as LA
+
+import FillArrays as FA
 import StaticArrays as SA
 
 include("blob/blob_interface.jl")
@@ -18,5 +20,9 @@ include("blob/gaussian_blob.jl")
 export GaussianVortexBlob
 export induced_velocity
 export induced_vorticity
+
+include("blob/induction.jl")
+export induction_field_superposition
+export induction_field_superposition!
 
 end
