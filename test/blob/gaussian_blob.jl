@@ -356,8 +356,7 @@ end
             target = rand(T2, 2)
             scalar = promote_type(T1, T2)
 
-            # @test typeof(induced_velocity(blob, target)) == VEM.SA.SVector{2, scalar}
-            @test induced_velocity(blob, target) isa VEM.SA.SVector{2, scalar}
+            @test induced_velocity(blob, target) isa VEM.SA.SVector{2,scalar}
         end
     end
 end
@@ -434,7 +433,6 @@ end
             target = rand(T2, 2)
             scalar = promote_type(T1, T2)
 
-            # @test typeof(induced_velocity(blob, target)) == VEM.SA.SVector{2, scalar}
             @test induced_vorticity(blob, target) isa scalar
         end
     end
