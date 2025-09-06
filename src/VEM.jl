@@ -23,5 +23,6 @@ export induced_vorticity
 
 include("blob/induction.jl")
 export induction_field_superposition
+export induction_field_superposition!
 
 end
