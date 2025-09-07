@@ -1,3 +1,21 @@
+function induction_return_type(
+    ::typeof(induced_velocity), ::Type{<:AbstractVortexBlob{Dimension,Scalar}}
+) where {Dimension,Scalar}
+    return SA.SVector{Dimension,Scalar}
+end
+
+function induction_return_type(
+    ::typeof(induced_vorticity), ::Type{<:AbstractVortexBlob{2,Scalar}}
+) where {Scalar}
+    return Scalar
+end
+
+function induction_return_type(
+    ::typeof(induced_vorticity), ::Type{<:AbstractVortexBlob{3,Scalar}}
+) where {Scalar}
+    return SA.SVector{3,Scalar}
+end
+
 """
     induction_field_superposition(induction::Function, blobs, targets)
 
@@ -12,7 +30,7 @@ Compute the superposition of fields induced by `blobs` at `targets`.
 A vector where each entry corresponds to the superposition of inductions at a target.
 """
 function induction_field_superposition(induction::Function, blobs, targets)
-    T = Base.return_types(induction, (eltype(blobs), eltype(targets)))[1]
+    T = induction_return_type(induction, eltype(blobs))
     result = zeros(T, length(targets))
     induction_field_superposition!(result, induction, blobs, targets)
     return result

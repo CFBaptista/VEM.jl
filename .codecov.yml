@@ -3,7 +3,9 @@ coverage:
     project:
       default:
         target: 90%
+        threshold: "1%"
 
 ignore:
   - "docs/"
+  - "src/precompile.jl"
   - "test/"

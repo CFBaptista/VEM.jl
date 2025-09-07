@@ -3,6 +3,7 @@ module VEM
 import LinearAlgebra as LA
 
 import FillArrays as FA
+import PrecompileTools as PCT
 import StaticArrays as SA
 
 include("blob/blob_interface.jl")
@@ -24,5 +25,7 @@ export induced_vorticity
 include("blob/induction.jl")
 export induction_field_superposition
 export induction_field_superposition!
+
+include("precompile.jl")
 
 end
