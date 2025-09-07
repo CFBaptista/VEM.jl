@@ -16,6 +16,12 @@ function induction_return_type(
     return SA.SVector{3,Scalar}
 end
 
+function zero_field(induction::Function, blobs, targets)
+    T = induction_return_type(induction, eltype(blobs))
+    result = zeros(T, length(targets))
+    return result
+end
+
 """
     induction_field_superposition(induction::Function, blobs, targets)
 
@@ -30,8 +36,7 @@ Compute the superposition of fields induced by `blobs` at `targets`.
 A vector where each entry corresponds to the superposition of inductions at a target.
 """
 function induction_field_superposition(induction::Function, blobs, targets)
-    T = induction_return_type(induction, eltype(blobs))
-    result = zeros(T, length(targets))
+    result = zero_field(induction, blobs, targets)
     induction_field_superposition!(result, induction, blobs, targets)
     return result
 end
@@ -79,15 +84,20 @@ Compute the superposition of fields induced by `blobs` at `targets` in-place.
 - `targets`: An iterable collection of targets.
 """
 function induction_field_superposition!(field, induction::Function, blobs, targets)
-    number_of_targets = length(targets)
+    number_of_blobs = length(blobs)
 
     Threads.@threads for index in eachindex(targets)
-        target = targets[index]
-        target_vector = FA.Fill(target, number_of_targets)
-        field[index] = mapreduce(induction, +, blobs, target_vector)
+        target = target_vector(targets, index, number_of_blobs)
+        field[index] = mapreduce(induction, +, blobs, target)
     end
 
     return nothing
+end
+
+function target_vector(targets, index, size)
+    target = targets[index]
+    vector = FA.Fill(target, size)
+    return vector
 end
 
 """

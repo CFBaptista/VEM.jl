@@ -221,3 +221,67 @@ end
         @test all(isapprox.(x, y; rtol=1e-12))
     end
 end
+
+@testitem "Return type for 2D induced velocity is a 2-vector" begin
+    # GIVEN
+
+    induction = induced_velocity
+    blob_type = AbstractVortexBlob{2,Float64}
+    expected_return_type = VEM.SA.SVector{2,Float64}
+
+    # WHEN
+
+    return_type = VEM.induction_return_type(induction, blob_type)
+
+    # THEN
+
+    @test return_type == expected_return_type
+end
+
+@testitem "Return type for 2D induced vorticity is a scalar" begin
+    # GIVEN
+
+    induction = induced_vorticity
+    blob_type = AbstractVortexBlob{2,Float64}
+    expected_return_type = Float64
+
+    # WHEN
+
+    return_type = VEM.induction_return_type(induction, blob_type)
+
+    # THEN
+
+    @test return_type == expected_return_type
+end
+
+@testitem "Return type for 3D induced velocity is a 3-vector" begin
+    # GIVEN
+
+    induction = induced_velocity
+    blob_type = AbstractVortexBlob{3,Float64}
+    expected_return_type = VEM.SA.SVector{3,Float64}
+
+    # WHEN
+
+    return_type = VEM.induction_return_type(induction, blob_type)
+
+    # THEN
+
+    @test return_type == expected_return_type
+end
+
+@testitem "Return type for 3D induced vorticity is a 3-vector" begin
+    # GIVEN
+
+    induction = induced_vorticity
+    blob_type = AbstractVortexBlob{3,Float64}
+    expected_return_type = VEM.SA.SVector{3,Float64}
+
+    # WHEN
+
+    return_type = VEM.induction_return_type(induction, blob_type)
+
+    # THEN
+
+    @test return_type == expected_return_type
+end
