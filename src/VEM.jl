@@ -7,6 +7,7 @@ import PrecompileTools as PCT
 import StaticArrays as SA
 
 include("definitions.jl")
+export Float
 
 include("blob/blob_interface.jl")
 export AbstractVortexBlob

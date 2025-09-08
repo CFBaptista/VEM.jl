@@ -226,8 +226,8 @@ end
     # GIVEN
 
     induction = induced_velocity
-    blob_type = AbstractVortexBlob{2,Float64}
-    expected_return_type = VEM.SA.SVector{2,Float64}
+    blob_type = AbstractVortexBlob{2,Float}
+    expected_return_type = VEM.SA.SVector{2,Float}
 
     # WHEN
 
@@ -242,8 +242,8 @@ end
     # GIVEN
 
     induction = induced_vorticity
-    blob_type = AbstractVortexBlob{2,Float64}
-    expected_return_type = Float64
+    blob_type = AbstractVortexBlob{2,Float}
+    expected_return_type = Float
 
     # WHEN
 
@@ -258,8 +258,8 @@ end
     # GIVEN
 
     induction = induced_velocity
-    blob_type = AbstractVortexBlob{3,Float64}
-    expected_return_type = VEM.SA.SVector{3,Float64}
+    blob_type = AbstractVortexBlob{3,Float}
+    expected_return_type = VEM.SA.SVector{3,Float}
 
     # WHEN
 
@@ -274,8 +274,8 @@ end
     # GIVEN
 
     induction = induced_vorticity
-    blob_type = AbstractVortexBlob{3,Float64}
-    expected_return_type = VEM.SA.SVector{3,Float64}
+    blob_type = AbstractVortexBlob{3,Float}
+    expected_return_type = VEM.SA.SVector{3,Float}
 
     # WHEN
 

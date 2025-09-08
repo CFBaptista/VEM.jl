@@ -75,7 +75,7 @@ end
 
 @testsnippet GaussianVortexBlob2D begin
     expected_dimension = 2
-    expected_scalar = Float64
+    expected_scalar = Float
     expected_circulation = 0.6822289008065964
     expected_center = [0.4266967221161493, 0.9585154998556389]
     expected_radius = 0.742102927541106
