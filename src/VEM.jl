@@ -6,6 +6,8 @@ import FillArrays as FA
 import PrecompileTools as PCT
 import StaticArrays as SA
 
+include("definitions.jl")
+
 include("blob/blob_interface.jl")
 export AbstractVortexBlob
 export blob_dimension
