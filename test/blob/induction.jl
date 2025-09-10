@@ -1,4 +1,6 @@
-@testsnippet TestBlob begin
+@testmodule TestBlob begin
+    using VEM
+
     struct Blob{Dimension,Scalar} <: VEM.AbstractVortexBlob{Dimension,Scalar}
         center::VEM.SA.SVector{Dimension,Scalar}
     end
@@ -15,7 +17,7 @@ end
     target = [0.7878535040075554, 0.6469266964176182]
     expected_result = [target - center]
 
-    blob = Blob(center)
+    blob = TestBlob.Blob(center)
 
     # WHEN
 
@@ -35,7 +37,7 @@ end
     target = [0.7878535040075554, 0.6469266964176182]
     expected_result = [target - center]
 
-    blob = Blob(center)
+    blob = TestBlob.Blob(center)
 
     result = zero(expected_result)
 
@@ -59,7 +61,7 @@ end
     ]
     expected_result = [target - center for target in targets]
 
-    blob = Blob(center)
+    blob = TestBlob.Blob(center)
 
     # WHEN
 
@@ -85,7 +87,7 @@ end
     ]
     expected_result = [target - center for target in targets]
 
-    blob = Blob(center)
+    blob = TestBlob.Blob(center)
 
     result = zero(expected_result)
 
@@ -111,7 +113,7 @@ end
     target = [0.013388563215556704, 0.2472053407499939]
     expected_result = [sum(target - center for center in centers)]
 
-    blobs = [Blob(center) for center in centers]
+    blobs = [TestBlob.Blob(center) for center in centers]
 
     # WHEN
 
@@ -135,7 +137,7 @@ end
     target = [0.013388563215556704, 0.2472053407499939]
     expected_result = [sum(target - center for center in centers)]
 
-    blobs = [Blob(center) for center in centers]
+    blobs = [TestBlob.Blob(center) for center in centers]
 
     result = zero(expected_result)
 
@@ -163,7 +165,7 @@ end
     ]
     expected_result = [sum(target - center for center in centers) for target in targets]
 
-    blobs = [Blob(center) for center in centers]
+    blobs = [TestBlob.Blob(center) for center in centers]
 
     # WHEN
 
@@ -193,7 +195,7 @@ end
     ]
     expected_result = [sum(target - center for center in centers) for target in targets]
 
-    blobs = [Blob(center) for center in centers]
+    blobs = [TestBlob.Blob(center) for center in centers]
 
     result = zero(expected_result)
 

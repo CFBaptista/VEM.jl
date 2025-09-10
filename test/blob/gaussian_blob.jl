@@ -76,11 +76,11 @@ end
 @testsnippet GaussianVortexBlob2D begin
     expected_dimension = 2
     expected_scalar = Float
-    expected_circulation = Float(0.6822289008065964)
-    expected_center = Float[0.4266967221161493, 0.9585154998556389]
-    expected_radius = Float(0.742102927541106)
+    expected_circulation = 0.6822289008065964
+    expected_center = [0.4266967221161493, 0.9585154998556389]
+    expected_radius = 0.742102927541106
 
-    target = Float[0.37910466032881385, 0.25319562281414765]
+    target = [0.37910466032881385, 0.25319562281414765]
 
     blob = GaussianVortexBlob(expected_circulation, expected_center, expected_radius)
 end
