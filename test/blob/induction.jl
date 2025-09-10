@@ -23,9 +23,7 @@ end
 
     # THEN
 
-    for (x, y) in zip(result, expected_result)
-        @test all(isapprox.(x, y; rtol=1e-12))
-    end
+    @test all(isapprox.(result, expected_result; rtol=1e-12))
 end
 
 @testitem "Single blob single target (in-place)" setup = [TestBlob] begin
@@ -47,9 +45,7 @@ end
 
     # THEN
 
-    for (x, y) in zip(result, expected_result)
-        @test all(isapprox.(x, y; rtol=1e-12))
-    end
+    @test all(isapprox.(result, expected_result; rtol=1e-12))
 end
 
 @testitem "Single blob multiple targets" setup = [TestBlob] begin
@@ -127,9 +123,7 @@ end
 
     # THEN
 
-    for (x, y) in zip(result, expected_result)
-        @test all(isapprox.(x, y; rtol=1e-12))
-    end
+    @test all(isapprox.(result, expected_result; rtol=1e-12))
 end
 
 @testitem "Multiple blobs single target (in-place)" setup = [TestBlob] begin
@@ -155,9 +149,7 @@ end
 
     # THEN
 
-    for (x, y) in zip(result, expected_result)
-        @test all(isapprox.(x, y; rtol=1e-12))
-    end
+    @test all(isapprox.(result, expected_result; rtol=1e-12))
 end
 
 @testitem "Multiple blobs multiple targets" setup = [TestBlob] begin
