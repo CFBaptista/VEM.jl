@@ -4,12 +4,12 @@
     end
 
     Blob(center) = Blob{length(center),eltype(center)}(center)
+
+    VEM.induced_velocity(blob, target) = target - blob.center
 end
 
 @testitem "Single blob single target" setup = [TestBlob] begin
     # GIVEN
-
-    VEM.induced_velocity(blob, target) = target - blob.center
 
     center = [0.6152631005751957, 0.18811339879309474]
     target = [0.7878535040075554, 0.6469266964176182]
@@ -50,8 +50,6 @@ end
 
 @testitem "Single blob multiple targets" setup = [TestBlob] begin
     # GIVEN
-
-    VEM.induced_velocity(blob, target) = target - blob.center
 
     center = [0.025098073771080753, 0.3738542048733142]
     targets = [
@@ -105,8 +103,6 @@ end
 @testitem "Multiple blobs single target" setup = [TestBlob] begin
     # GIVEN
 
-    VEM.induced_velocity(blob, target) = target - blob.center
-
     centers = [
         [0.7014982662114765, 0.37413148268776764],
         [0.5092038562572166, 0.32680395387189864],
@@ -154,8 +150,6 @@ end
 
 @testitem "Multiple blobs multiple targets" setup = [TestBlob] begin
     # GIVEN
-
-    VEM.induced_velocity(blob, target) = target - blob.center
 
     centers = [
         [0.8204700210355016, 0.8208193900068033],
