@@ -21,7 +21,7 @@ end
 
     # WHEN
 
-    result = induction_field_superposition(induced_velocity, blob, target)
+    result = superpose_induced_fields(induced_velocity, blob, target)
 
     # THEN
 
@@ -43,7 +43,7 @@ end
 
     # WHEN
 
-    induction_field_superposition!(result, induction, blob, target)
+    superpose_induced_fields!(result, induction, blob, target)
 
     # THEN
 
@@ -65,7 +65,7 @@ end
 
     # WHEN
 
-    result = induction_field_superposition(induced_velocity, blob, targets)
+    result = superpose_induced_fields(induced_velocity, blob, targets)
 
     # THEN
 
@@ -93,7 +93,7 @@ end
 
     # WHEN
 
-    induction_field_superposition!(result, induction, blob, targets)
+    superpose_induced_fields!(result, induction, blob, targets)
 
     # THEN
 
@@ -117,7 +117,7 @@ end
 
     # WHEN
 
-    result = induction_field_superposition(induced_velocity, blobs, target)
+    result = superpose_induced_fields(induced_velocity, blobs, target)
 
     # THEN
 
@@ -143,7 +143,7 @@ end
 
     # WHEN
 
-    induction_field_superposition!(result, induction, blobs, target)
+    superpose_induced_fields!(result, induction, blobs, target)
 
     # THEN
 
@@ -169,7 +169,7 @@ end
 
     # WHEN
 
-    result = induction_field_superposition(induced_velocity, blobs, targets)
+    result = superpose_induced_fields(induced_velocity, blobs, targets)
 
     # THEN
 
@@ -201,7 +201,7 @@ end
 
     # WHEN
 
-    induction_field_superposition!(result, induction, blobs, targets)
+    superpose_induced_fields!(result, induction, blobs, targets)
 
     # THEN
 

@@ -26,8 +26,8 @@ export induced_velocity
 export induced_vorticity
 
 include("blob/induction.jl")
-export induction_field_superposition
-export induction_field_superposition!
+export superpose_induced_fields
+export superpose_induced_fields!
 
 include("precompile.jl")
 

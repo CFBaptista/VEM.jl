@@ -21,15 +21,15 @@ PCT.@setup_workload begin
                 induced_velocity(blobs[1], targets[1])
                 induced_vorticity(blobs[1], targets[1])
 
-                induction_field_superposition(induced_velocity, blobs[1], targets[1])
-                induction_field_superposition(induced_velocity, blobs[1], targets)
-                induction_field_superposition(induced_velocity, blobs, targets[1])
-                induction_field_superposition(induced_velocity, blobs, targets)
+                superpose_induced_fields(induced_velocity, blobs[1], targets[1])
+                superpose_induced_fields(induced_velocity, blobs[1], targets)
+                superpose_induced_fields(induced_velocity, blobs, targets[1])
+                superpose_induced_fields(induced_velocity, blobs, targets)
 
-                induction_field_superposition(induced_vorticity, blobs[1], targets[1])
-                induction_field_superposition(induced_vorticity, blobs[1], targets)
-                induction_field_superposition(induced_vorticity, blobs, targets[1])
-                induction_field_superposition(induced_vorticity, blobs, targets)
+                superpose_induced_fields(induced_vorticity, blobs[1], targets[1])
+                superpose_induced_fields(induced_vorticity, blobs[1], targets)
+                superpose_induced_fields(induced_vorticity, blobs, targets[1])
+                superpose_induced_fields(induced_vorticity, blobs, targets)
             end
         end
     end
