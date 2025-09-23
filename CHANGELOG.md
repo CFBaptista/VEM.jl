@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Concrete type for Gaussian vortex blobs: `GaussianVortexBlob`. ([#3])
 - Velocity and vorticity induced by a 2D Gaussian vortex blob: `induced_velocity` and `induced_vorticity`. ([#3])
 - Superposition of the fields induced by a collection of blobs at target points: `superpose_induced_fields` and `superpose_induced_fields!`. ([#4])
+- Advection of a collection of vortex blobs: `advection!`. ([#5])
 
 ### Changed
 
