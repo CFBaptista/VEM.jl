@@ -28,9 +28,9 @@ function advection_operator!(du, u, p, t)
     return nothing
 end
 
-function update_centers!(blobs, new_centers)
+function update_centers!(blobs, new_centers::RAT.VectorOfArray)
     for index in eachindex(blobs)
-        blobs[index].center = new_centers[index]
+        @inbounds blobs[index].center = new_centers.u[index]
     end
 
     return nothing

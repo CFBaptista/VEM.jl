@@ -109,3 +109,87 @@ end
         @test isapprox(blobs[2].center, [x2, y2]; rtol=1e-6)
     end
 end
+
+@testitem "Advect blobs with Euler time scheme" setup = [TestAdvection] begin
+    # GIVEN
+
+    x0 = 0.4771646897488281
+    y0 = 0.4708430990547343
+    r = 0.3421682552533235
+
+    blobs = [
+        TestAdvection.Blob(0.4883797515506063, (x0, y0 + r)),
+        TestAdvection.Blob(-0.4883797515506063, (x0, y0 - r)),
+    ]
+
+    time_span = (0.0, 0.9737449132258409)
+    number_of_steps = 90
+    time_step = (time_span[2] - time_span[1]) / number_of_steps
+
+    # WHEN / THEN
+
+    time = time_span[1]
+    TestAdvection.advection!(blobs, time, time_step; time_scheme=VEM.ODE.Euler())
+
+    v = blob_circulation(blobs[1]) / (2 * pi * 2 * r)
+    x = x0 + v * time_step
+
+    @test isapprox(blobs[1].center, [x, y0 + r]; rtol=1e-6)
+    @test isapprox(blobs[2].center, [x, y0 - r]; rtol=1e-6)
+end
+
+@testitem "Advect blobs with Midpoint time scheme" setup = [TestAdvection] begin
+    # GIVEN
+
+    x0 = 0.4771646897488281
+    y0 = 0.4708430990547343
+    r = 0.3421682552533235
+
+    blobs = [
+        TestAdvection.Blob(0.4883797515506063, (x0, y0 + r)),
+        TestAdvection.Blob(-0.4883797515506063, (x0, y0 - r)),
+    ]
+
+    time_span = (0.0, 0.9737449132258409)
+    number_of_steps = 90
+    time_step = (time_span[2] - time_span[1]) / number_of_steps
+
+    # WHEN / THEN
+
+    time = time_span[1]
+    TestAdvection.advection!(blobs, time, time_step; time_scheme=VEM.ODE.Midpoint())
+
+    v = blob_circulation(blobs[1]) / (2 * pi * 2 * r)
+    x = x0 + v * time_step
+
+    @test isapprox(blobs[1].center, [x, y0 + r]; rtol=1e-6)
+    @test isapprox(blobs[2].center, [x, y0 - r]; rtol=1e-6)
+end
+
+@testitem "Advect blobs with Runge Kutta 4 time scheme" setup = [TestAdvection] begin
+    # GIVEN
+
+    x0 = 0.4771646897488281
+    y0 = 0.4708430990547343
+    r = 0.3421682552533235
+
+    blobs = [
+        TestAdvection.Blob(0.4883797515506063, (x0, y0 + r)),
+        TestAdvection.Blob(-0.4883797515506063, (x0, y0 - r)),
+    ]
+
+    time_span = (0.0, 0.9737449132258409)
+    number_of_steps = 90
+    time_step = (time_span[2] - time_span[1]) / number_of_steps
+
+    # WHEN / THEN
+
+    time = time_span[1]
+    TestAdvection.advection!(blobs, time, time_step; time_scheme=VEM.ODE.RK4())
+
+    v = blob_circulation(blobs[1]) / (2 * pi * 2 * r)
+    x = x0 + v * time_step
+
+    @test isapprox(blobs[1].center, [x, y0 + r]; rtol=1e-6)
+    @test isapprox(blobs[2].center, [x, y0 - r]; rtol=1e-6)
+end
