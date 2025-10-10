@@ -22,7 +22,8 @@ mutable struct GaussianVortexBlob{Dimension,Scalar} <: AbstractVortexBlob{Dimens
     function GaussianVortexBlob{Dimension,Scalar}(
         circulation, center, radius
     ) where {Dimension,Scalar}
-        if (length(circulation) == 1 && Dimension == 2) || length(circulation) == 3
+        if (length(circulation) == 1 && Dimension == 2) ||
+            length(circulation) == 3 && Dimension == 3
             return new{Dimension,Scalar}(circulation, center, radius)
         end
         throw(
