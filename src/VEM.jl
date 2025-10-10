@@ -22,6 +22,8 @@ export blob_center!
 export blob_radius
 export blob_radius!
 
+include("blob/blob_utilities.jl")
+
 include("blob/gaussian_blob.jl")
 export GaussianVortexBlob
 export induced_velocity
