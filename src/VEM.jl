@@ -3,7 +3,9 @@ module VEM
 import LinearAlgebra as LA
 
 import FillArrays as FA
+import OrdinaryDiffEq as ODE
 import PrecompileTools as PCT
+import RecursiveArrayTools as RAT
 import StaticArrays as SA
 
 include("definitions.jl")
@@ -20,6 +22,8 @@ export blob_center!
 export blob_radius
 export blob_radius!
 
+include("blob/blob_utilities.jl")
+
 include("blob/gaussian_blob.jl")
 export GaussianVortexBlob
 export induced_velocity
@@ -28,6 +32,9 @@ export induced_vorticity
 include("blob/induction.jl")
 export superpose_induced_fields
 export superpose_induced_fields!
+
+include("blob/advection.jl")
+export advection!
 
 include("precompile.jl")
 

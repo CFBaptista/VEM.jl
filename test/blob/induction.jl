@@ -7,7 +7,7 @@
 
     Blob(center) = Blob{length(center),eltype(center)}(center)
 
-    VEM.induced_velocity(blob, target) = target - blob.center
+    VEM.induced_velocity(blob::Blob, target) = target - blob.center
 end
 
 @testitem "Single blob single target" setup = [TestBlob] begin

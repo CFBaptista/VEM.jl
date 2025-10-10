@@ -30,6 +30,10 @@ PCT.@setup_workload begin
                 superpose_induced_fields(induced_vorticity, blobs[1], targets)
                 superpose_induced_fields(induced_vorticity, blobs, targets[1])
                 superpose_induced_fields(induced_vorticity, blobs, targets)
+
+                advection!(blobs, 0.0, 0.1; time_scheme=ODE.Euler())
+                advection!(blobs, 0.0, 0.1; time_scheme=ODE.Midpoint())
+                advection!(blobs, 0.0, 0.1; time_scheme=ODE.RK4())
             end
         end
     end
