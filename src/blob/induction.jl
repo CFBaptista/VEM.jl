@@ -24,11 +24,14 @@ end
 
 """
     superpose_induced_fields(induction::Function, blobs, targets)
+    superpose_induced_fields(induction::Function, blobs, target::AbstractVector{<:AbstractFloat})
+    superpose_induced_fields(induction::Function, blob::AbstractVortexBlob, targets)
+    superpose_induced_fields(induction::Function, blob::AbstractVortexBlob, target::AbstractVector{<:AbstractFloat})
 
-Compute the superposition of fields induced by `blobs` at `targets`.
+Compute the superposition of fields induced by one or multiple `blobs` at on or multiple `targets`.
 
 # Arguments
-- `induction::Function`: A function that computes the value induced by a blob at a target.
+- `induction`: A function that computes the value induced by a blob at a target.
 - `blobs`: An iterable collection of vortex blobs.
 - `targets`: An iterable collection of targets.
 
@@ -41,31 +44,16 @@ function superpose_induced_fields(induction::Function, blobs, targets)
     return result
 end
 
-"""
-    superpose_induced_fields(induction::Function, blobs, target::AbstractVector{<:AbstractFloat})
-
-Compute the superposition of fields induced by `blobs` at a single `target`.
-"""
 function superpose_induced_fields(
     induction::Function, blobs, target::AbstractVector{<:AbstractFloat}
 )
     return superpose_induced_fields(induction, blobs, tuple(target))
 end
 
-"""
-    superpose_induced_fields(induction::Function, blob::AbstractVortexBlob, targets)
-
-Compute the field induced by a `blob` at `targets`.
-"""
 function superpose_induced_fields(induction::Function, blob::AbstractVortexBlob, targets)
     return superpose_induced_fields(induction, tuple(blob), targets)
 end
 
-"""
-    superpose_induced_fields(induction::Function, blob::AbstractVortexBlob, target::AbstractVector{<:AbstractFloat})
-
-Compute the value induced by a `blob` at a `target`.
-"""
 function superpose_induced_fields(
     induction::Function, blob::AbstractVortexBlob, target::AbstractVector{<:AbstractFloat}
 )
@@ -74,8 +62,11 @@ end
 
 """
     superpose_induced_fields!(field, induction::Function, blobs, targets)
+    superpose_induced_fields!(field, induction::Function, blob::AbstractVortexBlob, targets)
+    superpose_induced_fields!(field, induction::Function, blobs, target::AbstractVector{<:AbstractFloat})
+    superpose_induced_fields!(field, induction::Function, blob::AbstractVortexBlob, target::AbstractVector{<:AbstractFloat})
 
-Compute the superposition of fields induced by `blobs` at `targets` in-place.
+Compute the superposition of fields induced by one or multiple `blobs` at on or multiple `targets` in-place.
 
 # Arguments
 - `field`: The superimposed induced field.
@@ -100,21 +91,11 @@ function target_vector(targets, index, size)
     return vector
 end
 
-"""
-    superpose_induced_fields!(field, induction::Function, blob::AbstractVortexBlob, targets)
-
-Compute the field induced by a `blob` at `targets` in-place.
-"""
 function superpose_induced_fields!(field, induction::Function, blob::AbstractVortexBlob, targets)
     superpose_induced_fields!(field, induction, tuple(blob), targets)
     return nothing
 end
 
-"""
-    superpose_induced_fields!(field, induction::Function, blobs, target::AbstractVector{<:AbstractFloat})
-
-Compute the superposition of fields induced by `blobs` at a single `target` in-place.
-"""
 function superpose_induced_fields!(
     field, induction::Function, blobs, target::AbstractArray{<:AbstractFloat}
 )
@@ -122,11 +103,6 @@ function superpose_induced_fields!(
     return nothing
 end
 
-"""
-    superpose_induced_fields!(field, induction::Function, blob::AbstractVortexBlob, target::AbstractVector{<:AbstractFloat})
-
-Compute the value induced by a `blob` at a `target` in-place.
-"""
 function superpose_induced_fields!(
     field, induction::Function, blob::AbstractVortexBlob, target::AbstractArray{<:AbstractFloat}
 )

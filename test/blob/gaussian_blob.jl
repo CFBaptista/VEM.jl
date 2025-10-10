@@ -65,12 +65,12 @@ end
     # GIVEN
 
     circulation = [0.11337262536359693, 0.28145956014569606, 0.4192211746213216]
-    center = [0.8164371245291423, 0.3580579843840971, 0.5074864635308087]
+    center = [0.8164371245291423, 0.3580579843840971]
     radius = 0.6630371529700086
 
     # WHEN / THEN
 
-    @test_throws MethodError blob = GaussianVortexBlob(circulation, center, radius)
+    @test_throws ArgumentError blob = GaussianVortexBlob(circulation, center, radius)
 end
 
 @testsnippet GaussianVortexBlob2D begin
