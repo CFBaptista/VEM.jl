@@ -8,7 +8,7 @@ The positions of the blobs are updated in-place.
 - `blobs`: An iterable collection of vortex blobs.
 - `time`: The time at the start of a time step.
 - `time_step`: The time increment over a single step.
-- `time_scheme`: (Optional) The time integration scheme to use. Defaults to `ODE.RK4()` (classical Runge-Kutta 4th order).
+- `time_scheme`: (Optional) The time integration scheme to use. Defaults to `OrdinaryDiffEq.RK4()` (classical Runge-Kutta 4th order).
 """
 function advection!(blobs, time, time_step; time_scheme=ODE.RK4())
     time_span = (time, time + time_step)

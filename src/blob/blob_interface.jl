@@ -8,8 +8,6 @@ abstract type AbstractVortexBlob{Dimension,Scalar<:AbstractFloat} end
 """
     blob_dimension(blob::AbstractVortexBlob)
 
-Return the spatial dimension of the given vortex blob.
-
 # Arguments
 - `blob`: The vortex blob.
 
@@ -21,8 +19,6 @@ blob_dimension(::AbstractVortexBlob{Dimension}) where {Dimension} = Dimension
 """
     blob_scalar(blob::AbstractVortexBlob)
 
-Return the floating-point type used for the data of the given vortex blob.
-
 # Arguments
 - `blob`: The vortex blob.
 
@@ -33,8 +29,6 @@ blob_scalar(::AbstractVortexBlob{Dimension,Scalar}) where {Dimension,Scalar} = S
 
 """
     blob_circulation(blob::AbstractVortexBlob)
-
-Return the circulation carried by the vortex blob.
 
 # Arguments
 - `blob`: The vortex blob.
@@ -61,8 +55,6 @@ end
 """
     blob_center(blob::AbstractVortexBlob)
 
-Return the position of the vortex blob.
-
 # Arguments
 - `blob`: The vortex blob.
 
@@ -87,8 +79,6 @@ end
 
 """
     blob_radius(blob::AbstractVortexBlob)
-
-Return the core radius of the vortex blob.
 
 # Arguments
 - `blob`: The vortex blob.
