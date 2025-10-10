@@ -12,7 +12,7 @@ The positions of the blobs are updated in-place.
 """
 function advection!(blobs, time, time_step; time_scheme=ODE.RK4())
     time_span = (time, time + time_step)
-    initial_condition = getfield.(blobs, :center)
+    initial_condition = blob_center.(blobs)
 
     problem = ODE.ODEProblem(
         advection_operator!, RAT.VectorOfArray(initial_condition), time_span, blobs
@@ -23,14 +23,14 @@ function advection!(blobs, time, time_step; time_scheme=ODE.RK4())
 end
 
 function advection_operator!(du, u, p, t)
-    update_centers!(p, u)
-    superpose_induced_fields!(du, induced_velocity, p, u)
+    update_centers!(p, u.u)
+    superpose_induced_fields!(du.u, induced_velocity, p, u.u)
     return nothing
 end
 
-function update_centers!(blobs, new_centers::RAT.VectorOfArray)
+function update_centers!(blobs, new_centers)
     for index in eachindex(blobs)
-        @inbounds blobs[index].center = new_centers.u[index]
+        @inbounds blobs[index].center = new_centers[index]
     end
 
     return nothing
