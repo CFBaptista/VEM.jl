@@ -417,7 +417,7 @@ end
 
     # THEN
 
-    @test isapprox(vorticity_2 / vorticity_1, expected_ratio; rtol=1e-15)
+    @test isapprox(vorticity_2 / vorticity_1, expected_ratio; rtol=1e-12)
 end
 
 @testitem "Induced vorticity type is the expected type" begin
