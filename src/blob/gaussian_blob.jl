@@ -1,8 +1,6 @@
 """
     GaussianVortexBlob(circulation::Union{Scalar,StaticArrays.SVector{Dimension,Scalar}}, center::StaticArrays.SVector{Dimension, Scalar}, radius::Scalar) where {Dimension, Scalar}
-    GaussianVortexBlob(circulation, center::AbstractVector, radius)
-    GaussianVortexBlob(circulation, center::StaticArrays.SVector, radius)
-    GaussianVortexBlob(circulation, center::Tuple, radius)
+    GaussianVortexBlob(circulation, center, radius)
 
 A smooth vortex blob with a Gaussian vorticity distribution.
 It is characterized by an amount of circulation it carries, a position and a finite core radius.
@@ -35,13 +33,17 @@ mutable struct GaussianVortexBlob{Dimension,Scalar} <: AbstractVortexBlob{Dimens
 end
 
 function GaussianVortexBlob(circulation, center, radius)
-    _circulation = if circulation isa Union{AbstractFloat,SA.SVector}
-        circulation
-    else
+    _circulation = if isa(circulation, AbstractVector) && !isa(circulation, SA.SVector)
         SA.SVector(circulation...)
+    else
+        circulation
     end
 
-    _center = center isa SA.SVector ? center : SA.SVector(center...)
+    _center = if isa(center, AbstractVector) && !isa(center, SA.SVector)
+        SA.SVector(center...)
+    else
+        center
+    end
 
     return GaussianVortexBlob{length(_center),eltype(_center)}(_circulation, _center, radius)
 end
