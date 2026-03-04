@@ -1,4 +1,4 @@
-@testmodule TestBlob begin
+@testmodule TestInduction begin
     using VEM
 
     struct Blob{Dimension,Scalar} <: VEM.AbstractVortexBlob{Dimension,Scalar}
@@ -10,14 +10,14 @@
     VEM.induced_velocity(blob::Blob, target) = target - blob.center
 end
 
-@testitem "Single blob single target" setup = [TestBlob] begin
+@testitem "Single blob single target" setup = [TestInduction] begin
     # GIVEN
 
     center = [0.6152631005751957, 0.18811339879309474]
     target = [0.7878535040075554, 0.6469266964176182]
     expected_result = [target - center]
 
-    blob = TestBlob.Blob(center)
+    blob = TestInduction.Blob(center)
 
     # WHEN
 
@@ -28,7 +28,7 @@ end
     @test all(isapprox.(result, expected_result; rtol=1e-12))
 end
 
-@testitem "Single blob single target (in-place)" setup = [TestBlob] begin
+@testitem "Single blob single target (in-place)" setup = [TestInduction] begin
     # GIVEN
 
     induction(blob, target) = target - blob.center
@@ -37,7 +37,7 @@ end
     target = [0.7878535040075554, 0.6469266964176182]
     expected_result = [target - center]
 
-    blob = TestBlob.Blob(center)
+    blob = TestInduction.Blob(center)
 
     result = zero(expected_result)
 
@@ -50,7 +50,7 @@ end
     @test all(isapprox.(result, expected_result; rtol=1e-12))
 end
 
-@testitem "Single blob multiple targets" setup = [TestBlob] begin
+@testitem "Single blob multiple targets" setup = [TestInduction] begin
     # GIVEN
 
     center = [0.025098073771080753, 0.3738542048733142]
@@ -61,7 +61,7 @@ end
     ]
     expected_result = [target - center for target in targets]
 
-    blob = TestBlob.Blob(center)
+    blob = TestInduction.Blob(center)
 
     # WHEN
 
@@ -74,7 +74,7 @@ end
     end
 end
 
-@testitem "Single blob multiple targets (in-place)" setup = [TestBlob] begin
+@testitem "Single blob multiple targets (in-place)" setup = [TestInduction] begin
     # GIVEN
 
     induction(blob, target) = target - blob.center
@@ -87,7 +87,7 @@ end
     ]
     expected_result = [target - center for target in targets]
 
-    blob = TestBlob.Blob(center)
+    blob = TestInduction.Blob(center)
 
     result = zero(expected_result)
 
@@ -102,7 +102,7 @@ end
     end
 end
 
-@testitem "Multiple blobs single target" setup = [TestBlob] begin
+@testitem "Multiple blobs single target" setup = [TestInduction] begin
     # GIVEN
 
     centers = [
@@ -113,7 +113,7 @@ end
     target = [0.013388563215556704, 0.2472053407499939]
     expected_result = [sum(target - center for center in centers)]
 
-    blobs = [TestBlob.Blob(center) for center in centers]
+    blobs = [TestInduction.Blob(center) for center in centers]
 
     # WHEN
 
@@ -124,7 +124,7 @@ end
     @test all(isapprox.(result, expected_result; rtol=1e-12))
 end
 
-@testitem "Multiple blobs single target (in-place)" setup = [TestBlob] begin
+@testitem "Multiple blobs single target (in-place)" setup = [TestInduction] begin
     # GIVEN
 
     induction(blob, target) = target - blob.center
@@ -137,7 +137,7 @@ end
     target = [0.013388563215556704, 0.2472053407499939]
     expected_result = [sum(target - center for center in centers)]
 
-    blobs = [TestBlob.Blob(center) for center in centers]
+    blobs = [TestInduction.Blob(center) for center in centers]
 
     result = zero(expected_result)
 
@@ -150,7 +150,7 @@ end
     @test all(isapprox.(result, expected_result; rtol=1e-12))
 end
 
-@testitem "Multiple blobs multiple targets" setup = [TestBlob] begin
+@testitem "Multiple blobs multiple targets" setup = [TestInduction] begin
     # GIVEN
 
     centers = [
@@ -165,7 +165,7 @@ end
     ]
     expected_result = [sum(target - center for center in centers) for target in targets]
 
-    blobs = [TestBlob.Blob(center) for center in centers]
+    blobs = [TestInduction.Blob(center) for center in centers]
 
     # WHEN
 
@@ -178,7 +178,7 @@ end
     end
 end
 
-@testitem "Multiple blobs multiple targets (in-place)" setup = [TestBlob] begin
+@testitem "Multiple blobs multiple targets (in-place)" setup = [TestInduction] begin
     # GIVEN
 
     induction(blob, target) = target - blob.center
@@ -195,7 +195,7 @@ end
     ]
     expected_result = [sum(target - center for center in centers) for target in targets]
 
-    blobs = [TestBlob.Blob(center) for center in centers]
+    blobs = [TestInduction.Blob(center) for center in centers]
 
     result = zero(expected_result)
 

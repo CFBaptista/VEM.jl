@@ -73,7 +73,7 @@ end
     @test_throws ArgumentError blob = GaussianVortexBlob(circulation, center, radius)
 end
 
-@testsnippet GaussianVortexBlob2D begin
+@testsnippet TestGaussianBlob begin
     expected_dimension = 2
     expected_scalar = Float64
     expected_circulation = 0.6822289008065964
@@ -85,7 +85,7 @@ end
     blob = GaussianVortexBlob(expected_circulation, expected_center, expected_radius)
 end
 
-@testitem "Get vortex blob dimension (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Get vortex blob dimension (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     # WHEN
@@ -97,7 +97,7 @@ end
     @test dimension == expected_dimension
 end
 
-@testitem "Get vortex blob scalar (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Get vortex blob scalar (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     # WHEN
@@ -109,7 +109,7 @@ end
     @test scalar == expected_scalar
 end
 
-@testitem "Get vortex blob circulation (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Get vortex blob circulation (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     # WHEN
@@ -121,7 +121,7 @@ end
     @test circulation == expected_circulation
 end
 
-@testitem "Update vortex blob circulation (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Update vortex blob circulation (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     new_circulation = 1.0
@@ -135,7 +135,7 @@ end
     @test blob_circulation(blob) == new_circulation
 end
 
-@testitem "Get vortex blob center (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Get vortex blob center (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     # WHEN
@@ -147,7 +147,7 @@ end
     @test center == expected_center
 end
 
-@testitem "Update vortex blob center (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Update vortex blob center (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     new_center = (0.5, 0.5)
@@ -161,7 +161,7 @@ end
     @test all(blob_center(blob) .== new_center)
 end
 
-@testitem "Get vortex blob radius (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Get vortex blob radius (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     # WHEN
@@ -173,7 +173,7 @@ end
     @test radius == expected_radius
 end
 
-@testitem "Update vortex blob radius (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Update vortex blob radius (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     new_radius = 1.0
@@ -187,7 +187,7 @@ end
     @test blob_radius(blob) == new_radius
 end
 
-@testitem "Induced velocity is proportional to circulation (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Induced velocity is proportional to circulation (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     factor = 0.9545476135575189
@@ -203,9 +203,7 @@ end
     @test isapprox(factor * old_velocity, new_velocity; rtol=1e-15)
 end
 
-@testitem "Positive circulation induces counter-clockwise velocity (2D)" setup = [
-    GaussianVortexBlob2D
-] begin
+@testitem "Positive circulation induces counter-clockwise velocity (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     target = blob_center(blob) + [0.5, 0.5]
@@ -222,7 +220,7 @@ end
 end
 
 @testitem "Induced velocity magnitude away from center is larger than zero (2D)" setup = [
-    GaussianVortexBlob2D
+    TestGaussianBlob
 ] begin
     # GIVEN
 
@@ -239,7 +237,7 @@ end
 end
 
 @testitem "Induced velocity at distance greater than 3 core radii scales approximately inverse proportional with distance (2D)" setup = [
-    GaussianVortexBlob2D
+    TestGaussianBlob
 ] begin
     # GIVEN
 
@@ -263,7 +261,7 @@ end
     @test isapprox(1 / ratio_distance, ratio_velocity; rtol=1e-3)
 end
 
-@testitem "Induced velocity is perpendicular to distance vector (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Induced velocity is perpendicular to distance vector (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     target = blob_center(blob) + [0.09942340947611172, 0.5730399377638032]
@@ -279,7 +277,7 @@ end
 end
 
 @testitem "Induced velocity magnitude increases between r = 0 and r = 1.5 core radii (2D)" setup = [
-    GaussianVortexBlob2D
+    TestGaussianBlob
 ] begin
     # GIVEN
 
@@ -299,7 +297,7 @@ end
     @test VEM.LA.norm(velocity_3) > VEM.LA.norm(velocity_2) > VEM.LA.norm(velocity_1)
 end
 
-@testitem "Induced velocity at the center is finite (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Induced velocity at the center is finite (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     # WHEN
@@ -311,7 +309,7 @@ end
     @test all(isfinite, velocity)
 end
 
-@testitem "Induced velocity at the center is zero (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Induced velocity at the center is zero (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     # WHEN
@@ -361,7 +359,7 @@ end
     end
 end
 
-@testitem "Induced vorticity is proportional to circulation (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Induced vorticity is proportional to circulation (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     factor = 0.14350917205481295
@@ -378,7 +376,7 @@ end
 end
 
 @testitem "Induced vorticity at center equals circulation / (2 * pi * radius^2)" setup = [
-    GaussianVortexBlob2D
+    TestGaussianBlob
 ] begin
     # GIVEN
 
@@ -394,7 +392,7 @@ end
 end
 
 @testitem "Induced vorticity decays exponentially with distance squared (2D)" setup = [
-    GaussianVortexBlob2D
+    TestGaussianBlob
 ] begin
     # GIVEN
 
@@ -438,7 +436,7 @@ end
     end
 end
 
-@testitem "Induced velocity is consistent with induced vorticity" setup = [GaussianVortexBlob2D] begin
+@testitem "Induced velocity is consistent with induced vorticity" setup = [TestGaussianBlob] begin
     # GIVEN
 
     target = blob_center(blob) + [0.7903753220899068, 0.20269405341897373]
