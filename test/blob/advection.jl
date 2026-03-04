@@ -8,7 +8,7 @@
 
     Blob(circulation, center) = Blob{length(center),eltype(center)}(circulation, center)
 
-    function VEM.induced_velocity(blob::Blob, target)
+    function VEM.induce(::VEM.VelocityField, blob::Blob, target)
         distance = target - blob.center
         distance_squared = VEM.LA.dot(distance, distance)
 

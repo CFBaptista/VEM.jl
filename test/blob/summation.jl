@@ -7,7 +7,7 @@
 
     Blob(center) = Blob{length(center),eltype(center)}(center)
 
-    VEM.induced_velocity(blob::Blob, target) = target - blob.center
+    VEM.induce(::VEM.VelocityField, blob::Blob, target) = target - blob.center
 end
 
 @testitem "Single blob single target" setup = [TestInduction] begin
@@ -21,7 +21,7 @@ end
 
     # WHEN
 
-    result = superpose_induced_fields(induced_velocity, blob, target)
+    result = direct_sum(VelocityField(), blob, target)
 
     # THEN
 
@@ -31,7 +31,7 @@ end
 @testitem "Single blob single target (in-place)" setup = [TestInduction] begin
     # GIVEN
 
-    induction(blob, target) = target - blob.center
+    induce(::VelocityField, blob::TestInduction.Blob, target) = target - blob.center
 
     center = [0.6152631005751957, 0.18811339879309474]
     target = [0.7878535040075554, 0.6469266964176182]
@@ -43,7 +43,7 @@ end
 
     # WHEN
 
-    superpose_induced_fields!(result, induction, blob, target)
+    direct_sum!(result, VelocityField(), blob, target)
 
     # THEN
 
@@ -65,7 +65,7 @@ end
 
     # WHEN
 
-    result = superpose_induced_fields(induced_velocity, blob, targets)
+    result = direct_sum(VelocityField(), blob, targets)
 
     # THEN
 
@@ -77,7 +77,7 @@ end
 @testitem "Single blob multiple targets (in-place)" setup = [TestInduction] begin
     # GIVEN
 
-    induction(blob, target) = target - blob.center
+    induce(::VelocityField, blob::TestInduction.Blob, target) = target - blob.center
 
     center = [0.025098073771080753, 0.3738542048733142]
     targets = [
@@ -93,7 +93,7 @@ end
 
     # WHEN
 
-    superpose_induced_fields!(result, induction, blob, targets)
+    direct_sum!(result, VelocityField(), blob, targets)
 
     # THEN
 
@@ -117,7 +117,7 @@ end
 
     # WHEN
 
-    result = superpose_induced_fields(induced_velocity, blobs, target)
+    result = direct_sum(VelocityField(), blobs, target)
 
     # THEN
 
@@ -127,7 +127,7 @@ end
 @testitem "Multiple blobs single target (in-place)" setup = [TestInduction] begin
     # GIVEN
 
-    induction(blob, target) = target - blob.center
+    induce(::VelocityField, blob::TestInduction.Blob, target) = target - blob.center
 
     centers = [
         [0.7014982662114765, 0.37413148268776764],
@@ -143,7 +143,7 @@ end
 
     # WHEN
 
-    superpose_induced_fields!(result, induction, blobs, target)
+    direct_sum!(result, VelocityField(), blobs, target)
 
     # THEN
 
@@ -169,7 +169,7 @@ end
 
     # WHEN
 
-    result = superpose_induced_fields(induced_velocity, blobs, targets)
+    result = direct_sum(VelocityField(), blobs, targets)
 
     # THEN
 
@@ -181,7 +181,7 @@ end
 @testitem "Multiple blobs multiple targets (in-place)" setup = [TestInduction] begin
     # GIVEN
 
-    induction(blob, target) = target - blob.center
+    induce(::VelocityField, blob::TestInduction.Blob, target) = target - blob.center
 
     centers = [
         [0.8204700210355016, 0.8208193900068033],
@@ -201,75 +201,11 @@ end
 
     # WHEN
 
-    superpose_induced_fields!(result, induction, blobs, targets)
+    direct_sum!(result, VelocityField(), blobs, targets)
 
     # THEN
 
     for (x, y) in zip(result, expected_result)
         @test all(isapprox.(x, y; rtol=1e-12))
     end
-end
-
-@testitem "Return type for 2D induced velocity is a 2-vector" begin
-    # GIVEN
-
-    induction = induced_velocity
-    blob_type = AbstractVortexBlob{2,Float}
-    expected_return_type = VEM.SA.SVector{2,Float}
-
-    # WHEN
-
-    return_type = VEM.induction_return_type(induction, blob_type)
-
-    # THEN
-
-    @test return_type == expected_return_type
-end
-
-@testitem "Return type for 2D induced vorticity is a scalar" begin
-    # GIVEN
-
-    induction = induced_vorticity
-    blob_type = AbstractVortexBlob{2,Float}
-    expected_return_type = Float
-
-    # WHEN
-
-    return_type = VEM.induction_return_type(induction, blob_type)
-
-    # THEN
-
-    @test return_type == expected_return_type
-end
-
-@testitem "Return type for 3D induced velocity is a 3-vector" begin
-    # GIVEN
-
-    induction = induced_velocity
-    blob_type = AbstractVortexBlob{3,Float}
-    expected_return_type = VEM.SA.SVector{3,Float}
-
-    # WHEN
-
-    return_type = VEM.induction_return_type(induction, blob_type)
-
-    # THEN
-
-    @test return_type == expected_return_type
-end
-
-@testitem "Return type for 3D induced vorticity is a 3-vector" begin
-    # GIVEN
-
-    induction = induced_vorticity
-    blob_type = AbstractVortexBlob{3,Float}
-    expected_return_type = VEM.SA.SVector{3,Float}
-
-    # WHEN
-
-    return_type = VEM.induction_return_type(induction, blob_type)
-
-    # THEN
-
-    @test return_type == expected_return_type
 end

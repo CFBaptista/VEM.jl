@@ -24,14 +24,18 @@ export blob_radius!
 
 include("blob/blob_utilities.jl")
 
+include("blob/induced_field_interface.jl")
+export AbstractInducedField
+export VelocityField
+export VorticityField
+
 include("blob/gaussian_blob.jl")
 export GaussianVortexBlob
-export induced_velocity
-export induced_vorticity
+export induce
 
-include("blob/induction.jl")
-export superpose_induced_fields
-export superpose_induced_fields!
+include("blob/summation.jl")
+export direct_sum
+export direct_sum!
 
 include("blob/advection.jl")
 export advection!

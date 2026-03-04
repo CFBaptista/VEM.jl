@@ -194,9 +194,9 @@ end
 
     # WHEN
 
-    old_velocity = induced_velocity(blob, target)
+    old_velocity = induce(VelocityField(), blob, target)
     blob_circulation!(blob, factor * blob_circulation(blob))
-    new_velocity = induced_velocity(blob, target)
+    new_velocity = induce(VelocityField(), blob, target)
 
     # THEN
 
@@ -211,7 +211,7 @@ end
 
     # WHEN
 
-    velocity = induced_velocity(blob, target)
+    velocity = induce(VelocityField(), blob, target)
 
     # THEN
 
@@ -228,7 +228,7 @@ end
 
     # WHEN
 
-    velocity = induced_velocity(blob, target)
+    velocity = induce(VelocityField(), blob, target)
     velocity_magnitude = VEM.LA.norm(velocity)
 
     # THEN
@@ -247,8 +247,8 @@ end
 
     # WHEN
 
-    velocity_1 = induced_velocity(blob, target_1)
-    velocity_2 = induced_velocity(blob, target_2)
+    velocity_1 = induce(VelocityField(), blob, target_1)
+    velocity_2 = induce(VelocityField(), blob, target_2)
 
     distance_1 = target_1 - blob_center(blob)
     distance_2 = target_2 - blob_center(blob)
@@ -268,7 +268,7 @@ end
 
     # WHEN
 
-    velocity = induced_velocity(blob, target)
+    velocity = induce(VelocityField(), blob, target)
     distance = target - blob_center(blob)
 
     # THEN
@@ -288,9 +288,9 @@ end
 
     # WHEN
 
-    velocity_1 = induced_velocity(blob, target_1)
-    velocity_2 = induced_velocity(blob, target_2)
-    velocity_3 = induced_velocity(blob, target_3)
+    velocity_1 = induce(VelocityField(), blob, target_1)
+    velocity_2 = induce(VelocityField(), blob, target_2)
+    velocity_3 = induce(VelocityField(), blob, target_3)
 
     # THEN
 
@@ -302,7 +302,7 @@ end
 
     # WHEN
 
-    velocity = induced_velocity(blob, blob_center(blob))
+    velocity = induce(VelocityField(), blob, blob_center(blob))
 
     # THEN
 
@@ -314,7 +314,7 @@ end
 
     # WHEN
 
-    velocity = induced_velocity(blob, blob_center(blob))
+    velocity = induce(VelocityField(), blob, blob_center(blob))
 
     # THEN
 
@@ -334,7 +334,7 @@ end
     # WHEN
 
     target = blob_center(blob) + [radius, 0.0]
-    velocity = induced_velocity(blob, target)
+    velocity = induce(VelocityField(), blob, target)
 
     # THEN
 
@@ -354,7 +354,7 @@ end
             target = rand(T2, 2)
             scalar = promote_type(T1, T2)
 
-            @test induced_velocity(blob, target) isa VEM.SA.SVector{2,scalar}
+            @test induce(VelocityField(), blob, target) isa VEM.SA.SVector{2,scalar}
         end
     end
 end
@@ -366,9 +366,9 @@ end
 
     # WHEN
 
-    old_vorticity = induced_vorticity(blob, target)
+    old_vorticity = induce(VorticityField(), blob, target)
     blob_circulation!(blob, factor * blob_circulation(blob))
-    new_vorticity = induced_vorticity(blob, target)
+    new_vorticity = induce(VorticityField(), blob, target)
 
     # THEN
 
@@ -384,7 +384,7 @@ end
 
     # WHEN
 
-    vorticity = induced_vorticity(blob, blob_center(blob))
+    vorticity = induce(VorticityField(), blob, blob_center(blob))
 
     # THEN
 
@@ -410,8 +410,8 @@ end
 
     # WHEN
 
-    vorticity_1 = induced_vorticity(blob, target_1)
-    vorticity_2 = induced_vorticity(blob, target_2)
+    vorticity_1 = induce(VorticityField(), blob, target_1)
+    vorticity_2 = induce(VorticityField(), blob, target_2)
 
     # THEN
 
@@ -431,7 +431,7 @@ end
             target = rand(T2, 2)
             scalar = promote_type(T1, T2)
 
-            @test induced_vorticity(blob, target) isa scalar
+            @test induce(VorticityField(), blob, target) isa scalar
         end
     end
 end
@@ -440,7 +440,7 @@ end
     # GIVEN
 
     target = blob_center(blob) + [0.7903753220899068, 0.20269405341897373]
-    expected_vorticity = induced_vorticity(blob, target)
+    expected_vorticity = induce(VorticityField(), blob, target)
 
     spacing = 1e-6
 
@@ -451,10 +451,10 @@ end
     target_y_plus = target + [0.0, spacing]
     target_y_minus = target - [0.0, spacing]
 
-    velocity_x_plus = induced_velocity(blob, target_x_plus)
-    velocity_x_minus = induced_velocity(blob, target_x_minus)
-    velocity_y_plus = induced_velocity(blob, target_y_plus)
-    velocity_y_minus = induced_velocity(blob, target_y_minus)
+    velocity_x_plus = induce(VelocityField(), blob, target_x_plus)
+    velocity_x_minus = induce(VelocityField(), blob, target_x_minus)
+    velocity_y_plus = induce(VelocityField(), blob, target_y_plus)
+    velocity_y_minus = induce(VelocityField(), blob, target_y_minus)
 
     du_dy = (velocity_y_plus[1] - velocity_y_minus[1]) / (2 * spacing)
     dv_dx = (velocity_x_plus[2] - velocity_x_minus[2]) / (2 * spacing)

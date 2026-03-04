@@ -49,18 +49,19 @@ function GaussianVortexBlob(circulation, center, radius)
 end
 
 """
-    induced_velocity(blob::GaussianVortexBlob{2}, target)
+    induce(::VelocityField, blob::GaussianVortexBlob{2}, target)
 
 Compute the velocity induced at `target` due to a 2D Gaussian vortex blob.
 
 # Arguments
+- `VelocityField`: The type of field to induce (velocity).
 - `blob`: The vortex blob.
 - `target`: The target position.
 
 # Returns
 The induced velocity at `target`.
 """
-function induced_velocity(blob::GaussianVortexBlob{2}, target)
+function induce(::VelocityField, blob::GaussianVortexBlob{2}, target)
     distance_squared, radius_squared, unscaled_influence, scaler, small_value = induced_velocity_setup_helper(
         blob, target
     )
@@ -73,18 +74,19 @@ function induced_velocity(blob::GaussianVortexBlob{2}, target)
 end
 
 """
-    induced_vorticity(blob::GaussianVortexBlob{2}, target)
+    induce(::VorticityField, blob::GaussianVortexBlob{2}, target)
 
 Compute the vorticity induced at `target` due to a 2D Gaussian vortex blob.
 
 # Arguments
+- `VorticityField`: The type of field to induce (vorticity).
 - `blob`: The vortex blob.
 - `target`: The target position.
 
 # Returns
 The induced vorticity at `target`.
 """
-function induced_vorticity(blob::GaussianVortexBlob{2}, target)
+function induce(::VorticityField, blob::GaussianVortexBlob{2}, target)
     distance_squared, radius_squared = induced_vorticity_input_helper(blob, target)
 
     mollifier = exp(-distance_squared / (2 * radius_squared))

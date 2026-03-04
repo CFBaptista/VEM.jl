@@ -24,7 +24,7 @@ end
 
 function advection_operator!(du, u, p, t)
     update_centers!(p, u.u)
-    superpose_induced_fields!(du.u, induced_velocity, p, u.u)
+    direct_sum!(du.u, VelocityField(), p, u.u)
     return nothing
 end
 
