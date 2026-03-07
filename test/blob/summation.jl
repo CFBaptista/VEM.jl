@@ -8,9 +8,17 @@
     Blob(center) = Blob{length(center),eltype(center)}(center)
 
     VEM.induce(::VEM.VelocityField, blob::Blob, target) = target - blob.center
+
+    function VEM.induce(::VEM.VorticityField, blob::Blob, target)
+        if blob_dimension(blob) == 2
+            return target[1] - blob.center[1]
+        else
+            return target - blob.center
+        end
+    end
 end
 
-@testitem "Single blob single target" setup = [TestInduction] begin
+@testitem "Velocity field due to single blob single target (out-of-place)" setup = [TestInduction] begin
     # GIVEN
 
     center = [0.6152631005751957, 0.18811339879309474]
@@ -28,7 +36,7 @@ end
     @test all(isapprox.(result, expected_result; rtol=1e-12))
 end
 
-@testitem "Single blob single target (in-place)" setup = [TestInduction] begin
+@testitem "Velocity field due to single blob single target (in-place)" setup = [TestInduction] begin
     # GIVEN
 
     induce(::VelocityField, blob::TestInduction.Blob, target) = target - blob.center
@@ -50,7 +58,9 @@ end
     @test all(isapprox.(result, expected_result; rtol=1e-12))
 end
 
-@testitem "Single blob multiple targets" setup = [TestInduction] begin
+@testitem "Velocity field due to single blob multiple targets (out-of-place)" setup = [
+    TestInduction
+] begin
     # GIVEN
 
     center = [0.025098073771080753, 0.3738542048733142]
@@ -74,7 +84,7 @@ end
     end
 end
 
-@testitem "Single blob multiple targets (in-place)" setup = [TestInduction] begin
+@testitem "Velocity field due to single blob multiple targets (in-place)" setup = [TestInduction] begin
     # GIVEN
 
     induce(::VelocityField, blob::TestInduction.Blob, target) = target - blob.center
@@ -102,7 +112,9 @@ end
     end
 end
 
-@testitem "Multiple blobs single target" setup = [TestInduction] begin
+@testitem "Velocity field due to multiple blobs single target (out-of-place)" setup = [
+    TestInduction
+] begin
     # GIVEN
 
     centers = [
@@ -124,7 +136,7 @@ end
     @test all(isapprox.(result, expected_result; rtol=1e-12))
 end
 
-@testitem "Multiple blobs single target (in-place)" setup = [TestInduction] begin
+@testitem "Velocity field due to multiple blobs single target (in-place)" setup = [TestInduction] begin
     # GIVEN
 
     induce(::VelocityField, blob::TestInduction.Blob, target) = target - blob.center
@@ -150,7 +162,9 @@ end
     @test all(isapprox.(result, expected_result; rtol=1e-12))
 end
 
-@testitem "Multiple blobs multiple targets" setup = [TestInduction] begin
+@testitem "Velocity field due to multiple blobs multiple targets (out-of-place)" setup = [
+    TestInduction
+] begin
     # GIVEN
 
     centers = [
@@ -178,10 +192,8 @@ end
     end
 end
 
-@testitem "Multiple blobs multiple targets (in-place)" setup = [TestInduction] begin
+@testitem "Velocity field due to multiple blobs multiple targets (in-place)" setup = [TestInduction] begin
     # GIVEN
-
-    induce(::VelocityField, blob::TestInduction.Blob, target) = target - blob.center
 
     centers = [
         [0.8204700210355016, 0.8208193900068033],
@@ -202,6 +214,62 @@ end
     # WHEN
 
     direct_sum!(result, VelocityField(), blobs, targets)
+
+    # THEN
+
+    for (x, y) in zip(result, expected_result)
+        @test all(isapprox.(x, y; rtol=1e-12))
+    end
+end
+
+@testitem "2D Vorticity field due to multiple blobs (out-of-place)" setup = [TestInduction] begin
+    # GIVEN
+
+    centers = [
+        [0.8204700210355016, 0.8208193900068033],
+        [0.15325130694336409, 0.8561836357829848],
+        [0.963601164863499, 0.9122089906784491],
+    ]
+    targets = [
+        [0.742561728483886, 0.6513592635559914],
+        [0.5684840571526122, 0.8422846505176326],
+        [0.9788982932234188, 0.4349865893258398],
+    ]
+    expected_result = [sum(target[1] - center[1] for center in centers) for target in targets]
+
+    blobs = [TestInduction.Blob(center) for center in centers]
+
+    # WHEN
+
+    result = direct_sum(VorticityField(), blobs, targets)
+
+    # THEN
+
+    for (x, y) in zip(result, expected_result)
+        @test all(isapprox.(x, y; rtol=1e-12))
+    end
+end
+
+@testitem "3D Vorticity field due to multiple blobs (out-of-place)" setup = [TestInduction] begin
+    # GIVEN
+
+    centers = [
+        [0.8204700210355016, 0.8208193900068033, 0.123456789],
+        [0.15325130694336409, 0.8561836357829848, 0.987654321],
+        [0.963601164863499, 0.9122089906784491, 0.192837465],
+    ]
+    targets = [
+        [0.742561728483886, 0.6513592635559914, 0.564738291],
+        [0.5684840571526122, 0.8422846505176326, 0.123456789],
+        [0.9788982932234188, 0.4349865893258398, 0.987654321],
+    ]
+    expected_result = [sum(target - center for center in centers) for target in targets]
+
+    blobs = [TestInduction.Blob(center) for center in centers]
+
+    # WHEN
+
+    result = direct_sum(VorticityField(), blobs, targets)
 
     # THEN
 
