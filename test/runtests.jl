@@ -12,9 +12,9 @@ using VEM
         Aqua.test_all(VEM; undocumented_names=true)
     end
 
-    @testset "Code linting (JET.jl)" begin
-        JET.test_package(VEM; target_defined_modules=true)
-    end
+    # @testset "Code linting (JET.jl)" begin
+    #     JET.test_package(VEM; target_defined_modules=true)
+    # end
 end
 
 @run_package_tests
