@@ -1,7 +1,7 @@
 """
     advection!(blobs, time, time_step; time_scheme=ODE.RK4())
 
-Advances the position of a collection of blobs by a single time step according to the local velocity field induced by the collection.
+Advance the position of a collection of blobs by a single time step according to the local velocity field induced by the collection.
 The positions of the blobs are updated in-place.
 
 # Arguments

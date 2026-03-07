@@ -1,7 +1,7 @@
 """
     direct_sum(induced_field::AbstractInducedField, blobs, targets)
 
-Compute the superposition of fields induced by one or multiple `blobs` at one or multiple `targets`.
+Compute the superposition of fields induced by a collection of `blobs` at a collection of `targets` (out-of-place).
 
 # Arguments
 - `induced_field`: The type of field to be induced by the blobs.
@@ -12,18 +12,19 @@ Compute the superposition of fields induced by one or multiple `blobs` at one or
 A vector where each entry corresponds to the superposition of inductions at a target.
 """
 function direct_sum(induced_field::AbstractInducedField, blobs, targets)
-    wrapped_blobs = wrap_induction_argument(blobs)
-    wrapped_targets = wrap_induction_argument(targets)
+    _blobs = wrap_induction_argument(blobs)
+    _targets = wrap_induction_argument(targets)
 
-    result = zero_field(induced_field, wrapped_blobs, wrapped_targets)
-    direct_sum!(result, induced_field, wrapped_blobs, wrapped_targets)
-    return result
+    field = zero_field(induced_field, _blobs, _targets)
+    direct_sum!(field, induced_field, _blobs, _targets)
+
+    return field
 end
 
 """
     direct_sum!(field, induced_field::AbstractInducedField, blobs, targets)
 
-Compute the superposition of fields induced by one or multiple `blobs` at one or multiple `targets` in-place.
+Compute the superposition of fields induced by a collection of `blobs` at a collection of `targets` (in-place).
 
 # Arguments
 - `field`: The superimposed induced field.
@@ -32,15 +33,15 @@ Compute the superposition of fields induced by one or multiple `blobs` at one or
 - `targets`: A single target or an iterable collection of targets.
 """
 function direct_sum!(field, induced_field::AbstractInducedField, blobs, targets)
-    wrapped_blobs = wrap_induction_argument(blobs)
-    wrapped_targets = wrap_induction_argument(targets)
+    _blobs = wrap_induction_argument(blobs)
+    _targets = wrap_induction_argument(targets)
 
-    number_of_blobs = length(wrapped_blobs)
+    number_of_blobs = length(_blobs)
     _induced_field = FA.Fill(induced_field, number_of_blobs)
 
-    Threads.@threads for index in eachindex(wrapped_targets)
-        target = FA.Fill(wrapped_targets[index], number_of_blobs)
-        field[index] = mapreduce(induce, +, _induced_field, wrapped_blobs, target)
+    Threads.@threads for index in eachindex(_targets)
+        _target = FA.Fill(_targets[index], number_of_blobs)
+        field[index] = mapreduce(induce, +, _induced_field, _blobs, _target)
     end
 
     return nothing

@@ -54,7 +54,7 @@ end
 Compute the velocity induced at `target` due to a 2D Gaussian vortex blob.
 
 # Arguments
-- `VelocityField`: The type of field to induce (velocity).
+- `VelocityField`: The type of field that is induced.
 - `blob`: The vortex blob.
 - `target`: The target position.
 
@@ -79,7 +79,7 @@ end
 Compute the vorticity induced at `target` due to a 2D Gaussian vortex blob.
 
 # Arguments
-- `VorticityField`: The type of field to induce (vorticity).
+- `VorticityField`: The type of field that is induced.
 - `blob`: The vortex blob.
 - `target`: The target position.
 

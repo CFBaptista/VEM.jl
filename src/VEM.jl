@@ -22,9 +22,9 @@ export blob_center!
 export blob_radius
 export blob_radius!
 
-include("blob/blob_utilities.jl")
+include("blob/utilities.jl")
 
-include("blob/induced_field_interface.jl")
+include("blob/field_interface.jl")
 export AbstractInducedField
 export VelocityField
 export VorticityField
