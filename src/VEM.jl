@@ -49,6 +49,12 @@ export nodes_per_axis
 export node_spacing
 export mesh_nodes
 
+include("blob/redistribution_kernel.jl")
+export AbstractRedistributionKernel
+export M4Prime
+export redistribution_weight
+export support_radius
+
 include("precompile.jl")
 
 end
