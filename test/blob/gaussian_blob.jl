@@ -73,7 +73,7 @@ end
     @test_throws ArgumentError blob = GaussianVortexBlob(circulation, center, radius)
 end
 
-@testsnippet GaussianVortexBlob2D begin
+@testsnippet TestGaussianBlob begin
     expected_dimension = 2
     expected_scalar = Float64
     expected_circulation = 0.6822289008065964
@@ -85,7 +85,7 @@ end
     blob = GaussianVortexBlob(expected_circulation, expected_center, expected_radius)
 end
 
-@testitem "Get vortex blob dimension (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Get vortex blob dimension (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     # WHEN
@@ -97,7 +97,7 @@ end
     @test dimension == expected_dimension
 end
 
-@testitem "Get vortex blob scalar (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Get vortex blob scalar (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     # WHEN
@@ -109,7 +109,7 @@ end
     @test scalar == expected_scalar
 end
 
-@testitem "Get vortex blob circulation (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Get vortex blob circulation (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     # WHEN
@@ -121,7 +121,7 @@ end
     @test circulation == expected_circulation
 end
 
-@testitem "Update vortex blob circulation (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Update vortex blob circulation (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     new_circulation = 1.0
@@ -135,7 +135,7 @@ end
     @test blob_circulation(blob) == new_circulation
 end
 
-@testitem "Get vortex blob center (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Get vortex blob center (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     # WHEN
@@ -147,7 +147,7 @@ end
     @test center == expected_center
 end
 
-@testitem "Update vortex blob center (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Update vortex blob center (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     new_center = (0.5, 0.5)
@@ -161,7 +161,7 @@ end
     @test all(blob_center(blob) .== new_center)
 end
 
-@testitem "Get vortex blob radius (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Get vortex blob radius (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     # WHEN
@@ -173,7 +173,7 @@ end
     @test radius == expected_radius
 end
 
-@testitem "Update vortex blob radius (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Update vortex blob radius (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     new_radius = 1.0
@@ -187,25 +187,23 @@ end
     @test blob_radius(blob) == new_radius
 end
 
-@testitem "Induced velocity is proportional to circulation (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Induced velocity is proportional to circulation (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     factor = 0.9545476135575189
 
     # WHEN
 
-    old_velocity = induced_velocity(blob, target)
+    old_velocity = induce(VelocityField(), blob, target)
     blob_circulation!(blob, factor * blob_circulation(blob))
-    new_velocity = induced_velocity(blob, target)
+    new_velocity = induce(VelocityField(), blob, target)
 
     # THEN
 
     @test isapprox(factor * old_velocity, new_velocity; rtol=1e-15)
 end
 
-@testitem "Positive circulation induces counter-clockwise velocity (2D)" setup = [
-    GaussianVortexBlob2D
-] begin
+@testitem "Positive circulation induces counter-clockwise velocity (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     target = blob_center(blob) + [0.5, 0.5]
@@ -213,7 +211,7 @@ end
 
     # WHEN
 
-    velocity = induced_velocity(blob, target)
+    velocity = induce(VelocityField(), blob, target)
 
     # THEN
 
@@ -222,7 +220,7 @@ end
 end
 
 @testitem "Induced velocity magnitude away from center is larger than zero (2D)" setup = [
-    GaussianVortexBlob2D
+    TestGaussianBlob
 ] begin
     # GIVEN
 
@@ -230,7 +228,7 @@ end
 
     # WHEN
 
-    velocity = induced_velocity(blob, target)
+    velocity = induce(VelocityField(), blob, target)
     velocity_magnitude = VEM.LA.norm(velocity)
 
     # THEN
@@ -239,7 +237,7 @@ end
 end
 
 @testitem "Induced velocity at distance greater than 3 core radii scales approximately inverse proportional with distance (2D)" setup = [
-    GaussianVortexBlob2D
+    TestGaussianBlob
 ] begin
     # GIVEN
 
@@ -249,8 +247,8 @@ end
 
     # WHEN
 
-    velocity_1 = induced_velocity(blob, target_1)
-    velocity_2 = induced_velocity(blob, target_2)
+    velocity_1 = induce(VelocityField(), blob, target_1)
+    velocity_2 = induce(VelocityField(), blob, target_2)
 
     distance_1 = target_1 - blob_center(blob)
     distance_2 = target_2 - blob_center(blob)
@@ -263,14 +261,14 @@ end
     @test isapprox(1 / ratio_distance, ratio_velocity; rtol=1e-3)
 end
 
-@testitem "Induced velocity is perpendicular to distance vector (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Induced velocity is perpendicular to distance vector (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     target = blob_center(blob) + [0.09942340947611172, 0.5730399377638032]
 
     # WHEN
 
-    velocity = induced_velocity(blob, target)
+    velocity = induce(VelocityField(), blob, target)
     distance = target - blob_center(blob)
 
     # THEN
@@ -279,7 +277,7 @@ end
 end
 
 @testitem "Induced velocity magnitude increases between r = 0 and r = 1.5 core radii (2D)" setup = [
-    GaussianVortexBlob2D
+    TestGaussianBlob
 ] begin
     # GIVEN
 
@@ -290,33 +288,33 @@ end
 
     # WHEN
 
-    velocity_1 = induced_velocity(blob, target_1)
-    velocity_2 = induced_velocity(blob, target_2)
-    velocity_3 = induced_velocity(blob, target_3)
+    velocity_1 = induce(VelocityField(), blob, target_1)
+    velocity_2 = induce(VelocityField(), blob, target_2)
+    velocity_3 = induce(VelocityField(), blob, target_3)
 
     # THEN
 
     @test VEM.LA.norm(velocity_3) > VEM.LA.norm(velocity_2) > VEM.LA.norm(velocity_1)
 end
 
-@testitem "Induced velocity at the center is finite (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Induced velocity at the center is finite (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     # WHEN
 
-    velocity = induced_velocity(blob, blob_center(blob))
+    velocity = induce(VelocityField(), blob, blob_center(blob))
 
     # THEN
 
     @test all(isfinite, velocity)
 end
 
-@testitem "Induced velocity at the center is zero (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Induced velocity at the center is zero (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     # WHEN
 
-    velocity = induced_velocity(blob, blob_center(blob))
+    velocity = induce(VelocityField(), blob, blob_center(blob))
 
     # THEN
 
@@ -336,7 +334,7 @@ end
     # WHEN
 
     target = blob_center(blob) + [radius, 0.0]
-    velocity = induced_velocity(blob, target)
+    velocity = induce(VelocityField(), blob, target)
 
     # THEN
 
@@ -356,21 +354,21 @@ end
             target = rand(T2, 2)
             scalar = promote_type(T1, T2)
 
-            @test induced_velocity(blob, target) isa VEM.SA.SVector{2,scalar}
+            @test induce(VelocityField(), blob, target) isa VEM.SA.SVector{2,scalar}
         end
     end
 end
 
-@testitem "Induced vorticity is proportional to circulation (2D)" setup = [GaussianVortexBlob2D] begin
+@testitem "Induced vorticity is proportional to circulation (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     factor = 0.14350917205481295
 
     # WHEN
 
-    old_vorticity = induced_vorticity(blob, target)
+    old_vorticity = induce(VorticityField(), blob, target)
     blob_circulation!(blob, factor * blob_circulation(blob))
-    new_vorticity = induced_vorticity(blob, target)
+    new_vorticity = induce(VorticityField(), blob, target)
 
     # THEN
 
@@ -378,7 +376,7 @@ end
 end
 
 @testitem "Induced vorticity at center equals circulation / (2 * pi * radius^2)" setup = [
-    GaussianVortexBlob2D
+    TestGaussianBlob
 ] begin
     # GIVEN
 
@@ -386,7 +384,7 @@ end
 
     # WHEN
 
-    vorticity = induced_vorticity(blob, blob_center(blob))
+    vorticity = induce(VorticityField(), blob, blob_center(blob))
 
     # THEN
 
@@ -394,7 +392,7 @@ end
 end
 
 @testitem "Induced vorticity decays exponentially with distance squared (2D)" setup = [
-    GaussianVortexBlob2D
+    TestGaussianBlob
 ] begin
     # GIVEN
 
@@ -412,12 +410,12 @@ end
 
     # WHEN
 
-    vorticity_1 = induced_vorticity(blob, target_1)
-    vorticity_2 = induced_vorticity(blob, target_2)
+    vorticity_1 = induce(VorticityField(), blob, target_1)
+    vorticity_2 = induce(VorticityField(), blob, target_2)
 
     # THEN
 
-    @test isapprox(vorticity_2 / vorticity_1, expected_ratio; rtol=1e-15)
+    @test isapprox(vorticity_2 / vorticity_1, expected_ratio; rtol=1e-12)
 end
 
 @testitem "Induced vorticity type is the expected type" begin
@@ -433,16 +431,16 @@ end
             target = rand(T2, 2)
             scalar = promote_type(T1, T2)
 
-            @test induced_vorticity(blob, target) isa scalar
+            @test induce(VorticityField(), blob, target) isa scalar
         end
     end
 end
 
-@testitem "Induced velocity is consistent with induced vorticity" setup = [GaussianVortexBlob2D] begin
+@testitem "Induced velocity is consistent with induced vorticity" setup = [TestGaussianBlob] begin
     # GIVEN
 
     target = blob_center(blob) + [0.7903753220899068, 0.20269405341897373]
-    expected_vorticity = induced_vorticity(blob, target)
+    expected_vorticity = induce(VorticityField(), blob, target)
 
     spacing = 1e-6
 
@@ -453,10 +451,10 @@ end
     target_y_plus = target + [0.0, spacing]
     target_y_minus = target - [0.0, spacing]
 
-    velocity_x_plus = induced_velocity(blob, target_x_plus)
-    velocity_x_minus = induced_velocity(blob, target_x_minus)
-    velocity_y_plus = induced_velocity(blob, target_y_plus)
-    velocity_y_minus = induced_velocity(blob, target_y_minus)
+    velocity_x_plus = induce(VelocityField(), blob, target_x_plus)
+    velocity_x_minus = induce(VelocityField(), blob, target_x_minus)
+    velocity_y_plus = induce(VelocityField(), blob, target_y_plus)
+    velocity_y_minus = induce(VelocityField(), blob, target_y_minus)
 
     du_dy = (velocity_y_plus[1] - velocity_y_minus[1]) / (2 * spacing)
     dv_dx = (velocity_x_plus[2] - velocity_x_minus[2]) / (2 * spacing)

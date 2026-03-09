@@ -18,18 +18,18 @@ PCT.@setup_workload begin
                 ]
                 targets = [target, target]
 
-                induced_velocity(blobs[1], targets[1])
-                induced_vorticity(blobs[1], targets[1])
+                induce(VelocityField(), blobs[1], targets[1])
+                induce(VorticityField(), blobs[1], targets[1])
 
-                superpose_induced_fields(induced_velocity, blobs[1], targets[1])
-                superpose_induced_fields(induced_velocity, blobs[1], targets)
-                superpose_induced_fields(induced_velocity, blobs, targets[1])
-                superpose_induced_fields(induced_velocity, blobs, targets)
+                direct_sum(VelocityField(), blobs[1], targets[1])
+                direct_sum(VelocityField(), blobs[1], targets)
+                direct_sum(VelocityField(), blobs, targets[1])
+                direct_sum(VelocityField(), blobs, targets)
 
-                superpose_induced_fields(induced_vorticity, blobs[1], targets[1])
-                superpose_induced_fields(induced_vorticity, blobs[1], targets)
-                superpose_induced_fields(induced_vorticity, blobs, targets[1])
-                superpose_induced_fields(induced_vorticity, blobs, targets)
+                direct_sum(VorticityField(), blobs[1], targets[1])
+                direct_sum(VorticityField(), blobs[1], targets)
+                direct_sum(VorticityField(), blobs, targets[1])
+                direct_sum(VorticityField(), blobs, targets)
 
                 advection!(blobs, 0.0, 0.1; time_scheme=ODE.Euler())
                 advection!(blobs, 0.0, 0.1; time_scheme=ODE.Midpoint())
