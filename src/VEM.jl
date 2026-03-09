@@ -40,6 +40,15 @@ export direct_sum!
 include("blob/advection.jl")
 export advection!
 
+include("blob/cartesian_mesh.jl")
+export CartesianMesh
+export mesh_dimension
+export mesh_scalar
+export cells_per_axis
+export nodes_per_axis
+export node_spacing
+export mesh_nodes
+
 include("precompile.jl")
 
 end

@@ -19,6 +19,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Advection of a collection of vortex blobs: `advection!`. ([#5])
 
+- Concrete type for a Cartesian mesh: `CartesianMesh`. ([#9])
+
 ### Changed
 
 -
