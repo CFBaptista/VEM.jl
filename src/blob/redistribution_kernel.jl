@@ -28,6 +28,8 @@ Compute the redistribution weight for a given distance using the M4' kernel.
 The redistribution weight corresponding to the given distance.
 """
 function redistribution_weight(::M4Prime, distance)
+    distance = abs(distance)
+
     if distance <= 1
         return distance * (-distance * 5 / 2 + distance^2 * 3 / 2) + 1
     elseif distance <= 2

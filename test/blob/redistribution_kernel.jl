@@ -29,3 +29,17 @@ end
 
     @test isapprox(weights, expected_weights)
 end
+
+@testitem "M4' redistribution kernel is an even function" setup = [TestM4PrimeKernel] begin
+    # GIVEN
+
+    distances = 0.0:0.5:2.5
+
+    # WHEN / THEN
+
+    for distance in distances
+        @test isapprox(
+            redistribution_weight(kernel, distance), redistribution_weight(kernel, -distance)
+        )
+    end
+end
