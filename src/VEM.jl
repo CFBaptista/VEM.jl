@@ -57,7 +57,7 @@ export redistribution_weight
 export support_radius
 
 include("blob/redistribution.jl")
-export redistribute
+export interpolate_circulation
 
 include("precompile.jl")
 

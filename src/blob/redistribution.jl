@@ -1,4 +1,4 @@
-function redistribute(blobs, mesh::CartesianMesh, kernel::AbstractRedistributionKernel)
+function interpolate_circulation(blobs, mesh::CartesianMesh, kernel::AbstractRedistributionKernel)
     if !inside_mesh(blobs, mesh)
         throw(ArgumentError("All blobs must reside within the redistribution mesh."))
     end
