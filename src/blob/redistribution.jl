@@ -1,3 +1,16 @@
+"""
+    redistribution(old_blobs, mesh::CartesianMesh, kernel::AbstractRedistributionKernel)
+
+Redistribute the `old_blobs` onto the `mesh` using the redistribution `kernel`.
+
+# Arguments
+- `old_blobs`: The vortex blobs to be redistributed.
+- `mesh`: The Cartesian mesh onto which the blobs will be redistributed at the nodes.
+- `kernel`: The redistribution kernel that determines the weights for redistribution.
+
+# Returns
+The redistributed vortex blobs at the nodes of the Cartesian `mesh`.
+"""
 function redistribution(old_blobs, mesh::CartesianMesh, kernel::AbstractRedistributionKernel)
     Blob = eltype(old_blobs)
     new_blobs = zeros(Blob, nodes_per_axis(mesh))
@@ -15,6 +28,19 @@ function redistribution(old_blobs, mesh::CartesianMesh, kernel::AbstractRedistri
     return new_blobs
 end
 
+"""
+    interpolate_circulation(blobs, mesh::CartesianMesh, kernel::AbstractRedistributionKernel)
+
+Interpolate the circulation of the `blobs` onto the nodes of the `mesh` using the redistribution `kernel`.
+
+# Arguments
+- `blobs`: The vortex blobs whose circulation is to be interpolated.
+- `mesh`: The Cartesian mesh onto which the circulation will be interpolated at the nodes.
+- `kernel`: The redistribution kernel that determines the weights for interpolation.
+
+# Returns
+The interpolated circulation at the nodes of the Cartesian `mesh`.
+"""
 function interpolate_circulation(blobs, mesh::CartesianMesh, kernel::AbstractRedistributionKernel)
     if !inside_mesh(blobs, mesh)
         throw(ArgumentError("All blobs must reside within the redistribution mesh."))

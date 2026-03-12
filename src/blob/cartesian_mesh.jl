@@ -1,7 +1,7 @@
 """
     CartesianMesh{Dimension,Scalar<:AbstractFloat}(cells_per_axis::NTuple{Dimension,Int}, spacing::Scalar)
 
-    A Cartesian mesh for vortex blob methods.
+A Cartesian mesh for vortex blob methods.
 
 # Argumentss
 - `cells_per_axis: The number of cells along each axis.
