@@ -1,3 +1,20 @@
+function redistribution(old_blobs, mesh::CartesianMesh, kernel::AbstractRedistributionKernel)
+    Blob = eltype(old_blobs)
+    new_blobs = zeros(Blob, nodes_per_axis(mesh))
+
+    circulations = interpolate_circulation(old_blobs, mesh, kernel)
+    radius = blob_radius(old_blobs[1])
+    spacing = node_spacing(mesh)
+
+    Threads.@threads for index in CartesianIndices(circulations)
+        circulation = circulations[index]
+        center = Tuple((i - 1) * spacing for i in Tuple(index))
+        new_blobs[index] = Blob(circulation, center, radius)
+    end
+
+    return new_blobs
+end
+
 function interpolate_circulation(blobs, mesh::CartesianMesh, kernel::AbstractRedistributionKernel)
     if !inside_mesh(blobs, mesh)
         throw(ArgumentError("All blobs must reside within the redistribution mesh."))
