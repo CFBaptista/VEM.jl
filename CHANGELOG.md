@@ -22,6 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Concrete type for a Cartesian mesh: `CartesianMesh`. ([#9])
 - Abstract type representing a vortex-blob redistribution kernel: `AbstractRedistributionKernel`. ([#9])
 - Concrete type for the M4' redistribution kernel: `M4Prime`. ([#9])
+- Function to redistribute blobs onto nodes of a Cartesian mesh: `redistribute`. ([#9])
 
 ### Changed
 

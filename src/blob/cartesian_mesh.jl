@@ -78,6 +78,26 @@ The spacing between nodes in the Cartesian mesh.
 node_spacing(mesh::CartesianMesh) = mesh.spacing
 
 """
+    mesh_bounds(mesh::CartesianMesh)
+
+Get the bounds of the `mesh`.
+
+# Arguments
+- `mesh`: The Cartesian mesh.
+
+# Returns
+The bounds of the Cartesian mesh as a tuple of tuples, where each inner tuple contains the minimum and maximum bounds along each axis.
+"""
+function mesh_bounds(mesh::CartesianMesh)
+    scalar = mesh_scalar(mesh)
+    spacing = node_spacing(mesh)
+
+    bounds = Tuple((zero(scalar), n * spacing) for n in cells_per_axis(mesh))
+
+    return bounds
+end
+
+"""
     mesh_nodes(mesh)
 
 Get the nodes of the `mesh`.
