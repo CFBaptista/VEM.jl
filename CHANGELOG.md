@@ -19,6 +19,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Advection of a collection of vortex blobs: `advection!`. ([#5])
 
+- Concrete type for a Cartesian mesh: `CartesianMesh`. ([#9])
+- Abstract type representing a vortex-blob redistribution kernel: `AbstractRedistributionKernel`. ([#9])
+- Concrete type for the M4' redistribution kernel: `M4Prime`. ([#9])
+- Function to interpolate blob circulations onto Cartesian mesh nodes: `interpolate_circulation`. ([#9])
+- Function to create redistributed blobs from old blobs and a Cartesian mesh: `redistribution`. ([#9])
+
 ### Changed
 
 -
