@@ -4,7 +4,7 @@
     mesh = CartesianMesh((5, 5), 0.1)
 
     expected_dimension = 2
-    expected_scalar = Float
+    expected_scalar = Float64
     expected_cells_per_axis = (5, 5)
     expected_nodes_per_axis = (6, 6)
     expected_node_spacing = 0.1

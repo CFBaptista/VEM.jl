@@ -28,7 +28,7 @@ end
     # WHEN / THEN
 
     for center in centers
-        blobs = [GaussianVortexBlob{2,Float}(circulation, center, radius)]
+        blobs = [GaussianVortexBlob{2,Float64}(circulation, center, radius)]
         @test_throws ArgumentError interpolate_circulation(blobs, mesh, kernel)
     end
 end
@@ -40,7 +40,7 @@ end
 
     center = [0.5, 0.5]
 
-    blobs = [GaussianVortexBlob{2,Float}(circulation, center, radius)]
+    blobs = [GaussianVortexBlob{2,Float64}(circulation, center, radius)]
 
     # WHEN
 
@@ -58,7 +58,7 @@ end
 
     center = [0.5, 0.5]
 
-    blobs = [GaussianVortexBlob{2,Float}(circulation, center, radius)]
+    blobs = [GaussianVortexBlob{2,Float64}(circulation, center, radius)]
 
     # WHEN
 
@@ -79,7 +79,7 @@ end
     # WHEN / THEN
 
     for center in centers
-        blobs = [GaussianVortexBlob{2,Float}(circulation, center, radius)]
+        blobs = [GaussianVortexBlob{2,Float64}(circulation, center, radius)]
         redistributed_blobs = interpolate_circulation(blobs, mesh, kernel)
 
         @test sum(x -> x != 0, redistributed_blobs) == 12
@@ -96,7 +96,7 @@ end
     # WHEN / THEN
 
     for center in centers
-        blobs = [GaussianVortexBlob{2,Float}(circulation, center, radius)]
+        blobs = [GaussianVortexBlob{2,Float64}(circulation, center, radius)]
         redistributed_blobs = interpolate_circulation(blobs, mesh, kernel)
 
         @test sum(x -> x != 0, redistributed_blobs) == 9
@@ -124,7 +124,7 @@ end
 
     center = [0.5, 0.5]
 
-    blobs = [GaussianVortexBlob{2,Float}(circulation, center, radius)]
+    blobs = [GaussianVortexBlob{2,Float64}(circulation, center, radius)]
 
     # WHEN
 
@@ -145,7 +145,7 @@ end
     # WHEN / THEN
 
     for center in centers
-        blobs = [GaussianVortexBlob{2,Float}(circulation, center, radius)]
+        blobs = [GaussianVortexBlob{2,Float64}(circulation, center, radius)]
         redistributed_blobs = interpolate_circulation(blobs, mesh, kernel)
 
         @test sum(x -> x != 0, redistributed_blobs) == 24
@@ -162,7 +162,7 @@ end
     # WHEN / THEN
 
     for center in centers
-        blobs = [GaussianVortexBlob{2,Float}(circulation, center, radius)]
+        blobs = [GaussianVortexBlob{2,Float64}(circulation, center, radius)]
         redistributed_blobs = interpolate_circulation(blobs, mesh, kernel)
 
         @test sum(x -> x != 0, redistributed_blobs) == 16
@@ -190,7 +190,7 @@ end
 
     center = [0.5, 0.5]
 
-    blobs = [GaussianVortexBlob{2,Float}(circulation, center, radius)]
+    blobs = [GaussianVortexBlob{2,Float64}(circulation, center, radius)]
 
     # WHEN
 
@@ -211,7 +211,7 @@ end
     # WHEN / THEN
 
     for center in centers
-        blobs = [GaussianVortexBlob{2,Float}(circulation, center, radius)]
+        blobs = [GaussianVortexBlob{2,Float64}(circulation, center, radius)]
         redistributed_blobs = interpolate_circulation(blobs, mesh, kernel)
 
         @test sum(x -> x != 0, redistributed_blobs) == 4
@@ -228,7 +228,7 @@ end
     # WHEN / THEN
 
     for center in centers
-        blobs = [GaussianVortexBlob{2,Float}(circulation, center, radius)]
+        blobs = [GaussianVortexBlob{2,Float64}(circulation, center, radius)]
         redistributed_blobs = interpolate_circulation(blobs, mesh, kernel)
 
         @test sum(x -> x != 0, redistributed_blobs) == 4
