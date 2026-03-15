@@ -3,13 +3,13 @@ PCT.@setup_workload begin
         for Dimension in (2,)
             for Scalar in (Float32, Float64)
                 if Dimension == 2
-                    circulation = Scalar(0)
+                    circulation = Scalar(0.1)
                 elseif Dimension == 3
-                    circulation = SA.SVector{3,Scalar}(0, 0, 0)
+                    circulation = SA.SVector{3,Scalar}(0.1, 0.2, 0.3)
                 end
 
                 center = zero(SA.SVector{Dimension,Scalar})
-                radius = Scalar(0)
+                radius = Scalar(0.1)
                 target = zero(SA.SVector{Dimension,Scalar})
 
                 blobs = [
@@ -34,6 +34,10 @@ PCT.@setup_workload begin
                 advection!(blobs, 0.0, 0.1; time_scheme=ODE.Euler())
                 advection!(blobs, 0.0, 0.1; time_scheme=ODE.Midpoint())
                 advection!(blobs, 0.0, 0.1; time_scheme=ODE.RK4())
+
+                mesh = CartesianMesh((10, 10), 0.1)
+                kernel = M4Prime()
+                redistribution(blobs, mesh, kernel)
             end
         end
     end
