@@ -6,6 +6,19 @@ Abstract type representing a vortex blob in `Dimension`-dimensional space, param
 abstract type AbstractVortexBlob{Dimension,Scalar<:AbstractFloat} end
 
 """
+    Base.zero(blob::AbstractVortexBlob)
+
+Return a vortex blob with all data set to 0.
+
+# Arguments
+- `blob`: An instance of a vortex blob.
+
+# Returns
+A vortex blob instance with zero circulation, center, and radius.
+"""
+Base.zero(blob::AbstractVortexBlob) = zero(typeof(blob))
+
+"""
     blob_dimension(blob::AbstractVortexBlob)
 
 # Arguments
