@@ -36,8 +36,8 @@ PCT.@setup_workload begin
                 advection!(blobs, 0.0, 0.1; time_scheme=ODE.RK4())
 
                 mesh = CartesianMesh((10, 10), 0.1)
-                kernel = M4Prime()
-                redistribution(blobs, mesh, kernel)
+
+                redistribution(blobs, mesh, M4Prime())
             end
         end
     end
