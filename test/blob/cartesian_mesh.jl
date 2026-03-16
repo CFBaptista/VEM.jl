@@ -1,4 +1,4 @@
-@testsnippet TestCartesianMesh2D2D begin
+@testsnippet TestCartesianMesh2D begin
     # GIVEN
 
     mesh = CartesianMesh((5, 5), 0.1)
