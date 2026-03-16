@@ -28,6 +28,7 @@ include("blob/field_interface.jl")
 export AbstractInducedField
 export VelocityField
 export VorticityField
+export field_scalar
 
 include("blob/gaussian_blob.jl")
 export GaussianVortexBlob
@@ -39,6 +40,26 @@ export direct_sum!
 
 include("blob/advection.jl")
 export advection!
+
+include("blob/cartesian_mesh.jl")
+export CartesianMesh
+export mesh_dimension
+export mesh_scalar
+export cells_per_axis
+export nodes_per_axis
+export node_spacing
+export mesh_bounds
+export mesh_nodes
+
+include("blob/redistribution_kernel.jl")
+export AbstractRedistributionKernel
+export M4Prime
+export redistribution_weight
+export support_radius
+
+include("blob/redistribution.jl")
+export redistribution
+export interpolate_circulation
 
 include("precompile.jl")
 

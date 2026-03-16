@@ -12,6 +12,18 @@ A singleton type representing a velocity field.
 """
 struct VelocityField <: AbstractInducedField end
 
+"""
+    field_scalar(::VelocityField, blob::AbstractVortexBlob)
+
+Determine the scalar type of the velocity field induced by a vortex blob.
+
+# Arguments
+- `::VelocityField`: The type of field that is induced.
+- `blob`: The vortex blob for which the field is being induced.
+
+# Returns
+The scalar type of the velocity field induced by the vortex blob.
+"""
 function field_scalar(
     ::VelocityField, blob::AbstractVortexBlob{Dimension,Scalar}
 ) where {Dimension,Scalar}

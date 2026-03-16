@@ -1,4 +1,16 @@
-@testitem "Create blob with center::Tuple (2D)" begin
+@testitem "Create a 2D Gaussian vortex blob with zero data" begin
+    # WHEN
+
+    blob = zero(GaussianVortexBlob{2,Float64})
+
+    # THEN
+
+    @test blob_circulation(blob) == 0.0
+    @test blob_center(blob) == [0.0, 0.0]
+    @test blob_radius(blob) == 0.0
+end
+
+@testitem "Create a 2D Gaussian vortex blob with center::Tuple" begin
     # GIVEN
 
     center = (0.5, 0.5)
@@ -11,7 +23,7 @@
     end
 end
 
-@testitem "Create blob with center::Vector (2D)" begin
+@testitem "Create a 2D Gaussian vortex blob with center::Vector" begin
     # GIVEN
 
     center = [0.5, 0.5]
@@ -24,7 +36,7 @@ end
     end
 end
 
-@testitem "Create blob with center::SVector (2D)" begin
+@testitem "Create a 2D Gaussian vortex blob with center::SVector" begin
     # GIVEN
 
     center = VEM.SA.SVector(0.5, 0.5)
@@ -37,7 +49,7 @@ end
     end
 end
 
-@testitem "Cannot create blob with mixed floating-point types (2D)" begin
+@testitem "Cannot create a 2D Gaussian vortex blob with mixed floating-point types" begin
     # GIVEN
 
     circulation = Float64(1)
@@ -49,7 +61,7 @@ end
     @test_throws MethodError blob = GaussianVortexBlob(circulation, center, radius)
 end
 
-@testitem "Cannot create blob with scalar circulation and 3D position" begin
+@testitem "Cannot create a 2D Gaussian vortex blob with scalar circulation and 3D position" begin
     # GIVEN
 
     circulation = 0.23024673335450663
@@ -61,7 +73,7 @@ end
     @test_throws ArgumentError blob = GaussianVortexBlob(circulation, center, radius)
 end
 
-@testitem "Cannot create blob with 3D circulation and 2D position" begin
+@testitem "Cannot create a 2D Gaussian vortex blob with 3D circulation and 2D position" begin
     # GIVEN
 
     circulation = [0.11337262536359693, 0.28145956014569606, 0.4192211746213216]
@@ -85,7 +97,7 @@ end
     blob = GaussianVortexBlob(expected_circulation, expected_center, expected_radius)
 end
 
-@testitem "Get vortex blob dimension (2D)" setup = [TestGaussianBlob] begin
+@testitem "Get dimension of a 2D Gaussian vortex blob" setup = [TestGaussianBlob] begin
     # GIVEN
 
     # WHEN
@@ -97,7 +109,7 @@ end
     @test dimension == expected_dimension
 end
 
-@testitem "Get vortex blob scalar (2D)" setup = [TestGaussianBlob] begin
+@testitem "Get scalar of a 2D Gaussian vortex blob" setup = [TestGaussianBlob] begin
     # GIVEN
 
     # WHEN
@@ -109,7 +121,7 @@ end
     @test scalar == expected_scalar
 end
 
-@testitem "Get vortex blob circulation (2D)" setup = [TestGaussianBlob] begin
+@testitem "Get circulation of a 2D Gaussian vortex blob" setup = [TestGaussianBlob] begin
     # GIVEN
 
     # WHEN
@@ -121,7 +133,7 @@ end
     @test circulation == expected_circulation
 end
 
-@testitem "Update vortex blob circulation (2D)" setup = [TestGaussianBlob] begin
+@testitem "Update circulation of a 2D Gaussian vortex blob" setup = [TestGaussianBlob] begin
     # GIVEN
 
     new_circulation = 1.0
@@ -135,7 +147,7 @@ end
     @test blob_circulation(blob) == new_circulation
 end
 
-@testitem "Get vortex blob center (2D)" setup = [TestGaussianBlob] begin
+@testitem "Get center of a 2D Gaussian vortex blob" setup = [TestGaussianBlob] begin
     # GIVEN
 
     # WHEN
@@ -147,7 +159,7 @@ end
     @test center == expected_center
 end
 
-@testitem "Update vortex blob center (2D)" setup = [TestGaussianBlob] begin
+@testitem "Update center of a 2D Gaussian vortex blob" setup = [TestGaussianBlob] begin
     # GIVEN
 
     new_center = (0.5, 0.5)
@@ -161,7 +173,7 @@ end
     @test all(blob_center(blob) .== new_center)
 end
 
-@testitem "Get vortex blob radius (2D)" setup = [TestGaussianBlob] begin
+@testitem "Get radius of a 2D Gaussian vortex blob" setup = [TestGaussianBlob] begin
     # GIVEN
 
     # WHEN
@@ -173,7 +185,7 @@ end
     @test radius == expected_radius
 end
 
-@testitem "Update vortex blob radius (2D)" setup = [TestGaussianBlob] begin
+@testitem "Update radius of a 2D Gaussian vortex blob" setup = [TestGaussianBlob] begin
     # GIVEN
 
     new_radius = 1.0
@@ -341,7 +353,7 @@ end
     @test isapprox(VEM.LA.norm(velocity), expected_velocity_magnitude; rtol=1e-15)
 end
 
-@testitem "Induced velocity type is the expected type" begin
+@testitem "Induced velocity type is the expected type (2D)" begin
     T = (Float16, Float32, Float64, BigFloat)
 
     for T1 in T
@@ -418,7 +430,7 @@ end
     @test isapprox(vorticity_2 / vorticity_1, expected_ratio; rtol=1e-12)
 end
 
-@testitem "Induced vorticity type is the expected type" begin
+@testitem "Induced vorticity type is the expected type (2D)" begin
     T = (Float16, Float32, Float64, BigFloat)
 
     for T1 in T
@@ -436,7 +448,7 @@ end
     end
 end
 
-@testitem "Induced velocity is consistent with induced vorticity" setup = [TestGaussianBlob] begin
+@testitem "Induced velocity is consistent with induced vorticity (2D)" setup = [TestGaussianBlob] begin
     # GIVEN
 
     target = blob_center(blob) + [0.7903753220899068, 0.20269405341897373]

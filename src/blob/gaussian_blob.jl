@@ -49,6 +49,24 @@ function GaussianVortexBlob(circulation, center, radius)
 end
 
 """
+    zero(::Type{GaussianVortexBlob{Dimension,Scalar}}) where {Dimension, Scalar}
+
+Return a `GaussianVortexBlob` with all data set to 0.
+
+# Arguments
+- `GaussianVortexBlob{Dimension,Scalar}`: The type of a vortex blob..
+
+# Returns
+A `GaussianVortexBlob` instance with zero circulation, center, and radius.
+"""
+function Base.zero(::Type{GaussianVortexBlob{2,Scalar}}) where {Scalar}
+    return GaussianVortexBlob(zero(Scalar), zero(SA.SVector{2,Scalar}), zero(Scalar))
+end
+function Base.zero(::Type{GaussianVortexBlob{3,Scalar}}) where {Scalar}
+    return GaussianVortexBlob(zero(SA.SVector{3,Scalar}), zero(SA.SVector{3,Scalar}), zero(Scalar))
+end
+
+"""
     induce(::VelocityField, blob::GaussianVortexBlob{2}, target)
 
 Compute the velocity induced at `target` due to a 2D Gaussian vortex blob.

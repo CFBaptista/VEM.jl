@@ -35,3 +35,10 @@ function induced_vorticity_output_helper(circulation, mollifier, radius_squared)
     vorticity = circulation * (mollifier / (radius_squared * pi * 2))
     return vorticity
 end
+
+function bounding_box(points)
+    minimum = reduce((x, y) -> min.(x, y), points)
+    maximum = reduce((x, y) -> max.(x, y), points)
+    extent = ((x, y) for (x, y) in zip(minimum, maximum))
+    return extent
+end
