@@ -18,6 +18,28 @@ end
     absolute_tolerance = 1e-15
 end
 
+@testitem "Redistribute blobs" setup = [TestRedistribution, TestRedistributionPerfectOverlap] begin
+    # GIVEN
+
+    center = [0.5, 0.5]
+
+    blobs = [GaussianVortexBlob{2,Float64}(circulation, center, radius)]
+
+    # WHEN
+
+    redistributed_blobs = redistribution(blobs, mesh, kernel)
+
+    # THEN
+
+    @test eltype(redistributed_blobs) == eltype(blobs)
+    @test size(redistributed_blobs) == nodes_per_axis(mesh)
+    @test blob_radius(redistributed_blobs[1]) == blob_radius(blobs[1]) == node_spacing(mesh)
+
+    for (blob, node) in zip(redistributed_blobs, mesh_nodes(mesh))
+        @test isapprox(blob_center(blob), node)
+    end
+end
+
 @testitem "Blob outside of redistribution mesh throws ArgumentError" setup = [
     TestRedistribution, TestRedistributionPerfectOverlap
 ] begin

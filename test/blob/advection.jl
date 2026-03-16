@@ -166,7 +166,7 @@ end
     @test isapprox(blobs[2].center, [x, y0 - r]; rtol=1e-6)
 end
 
-@testitem "Advect blobs with Runge Kutta 4 time scheme" setup = [TestAdvection] begin
+@testitem "Advect blobs with Runge-Kutta 4th order time scheme" setup = [TestAdvection] begin
     # GIVEN
 
     x0 = 0.4771646897488281

@@ -28,6 +28,7 @@ include("blob/field_interface.jl")
 export AbstractInducedField
 export VelocityField
 export VorticityField
+export field_scalar
 
 include("blob/gaussian_blob.jl")
 export GaussianVortexBlob
