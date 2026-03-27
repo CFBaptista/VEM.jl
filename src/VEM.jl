@@ -3,6 +3,7 @@ module VEM
 import LinearAlgebra as LA
 
 import FillArrays as FA
+import ImageFiltering as IF
 import OrdinaryDiffEq as ODE
 import PrecompileTools as PCT
 import RecursiveArrayTools as RAT
