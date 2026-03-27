@@ -1,3 +1,16 @@
+"""
+    diffusion!(blobs, viscosity, mesh, time, time_step; time_scheme=ODE.RK4())
+
+Apply diffusion to the given blobs over a time step using the specified time integration scheme.
+
+# Arguments
+- `blobs`: A collection of blobs.
+- `viscosity`: The fluid viscosity.
+- `mesh`: The Cartesian mesh whose nodes are the locations of the blobs.
+- `time`: The time at the start of the time step.
+- `time_step`: The time increment for diffusion.
+- `time_scheme`: (Optional) The time integration scheme to use, default is `ODE.RK4()`.
+"""
 function diffusion!(blobs, viscosity, mesh, time, time_step; time_scheme=ODE.RK4())
     initial_condition = blob_circulation.(blobs)
     time_span = (time, time + time_step)
