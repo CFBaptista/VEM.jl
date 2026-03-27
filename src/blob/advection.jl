@@ -11,8 +11,8 @@ The positions of the blobs are updated in-place.
 - `time_scheme`: (Optional) The time integration scheme to use. Defaults to `OrdinaryDiffEq.RK4()` (classical Runge-Kutta 4th order).
 """
 function advection!(blobs, time, time_step; time_scheme=ODE.RK4())
-    time_span = (time, time + time_step)
     initial_condition = blob_center.(blobs)
+    time_span = (time, time + time_step)
 
     problem = ODE.ODEProblem(
         advection_operator!, RAT.VectorOfArray(initial_condition), time_span, blobs

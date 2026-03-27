@@ -62,6 +62,9 @@ include("blob/redistribution.jl")
 export redistribution
 export interpolate_circulation
 
+include("blob/diffusion.jl")
+export diffusion!
+
 include("precompile.jl")
 
 end
