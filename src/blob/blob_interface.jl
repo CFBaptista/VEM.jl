@@ -6,7 +6,7 @@ Abstract type representing a vortex blob in `Dimension`-dimensional space, param
 abstract type AbstractVortexBlob{Dimension,Scalar<:AbstractFloat} end
 
 """
-    Base.zero(blob::AbstractVortexBlob)
+    Base.zero(::T) where {T<:AbstractVortexBlob}
 
 Return a vortex blob with all data set to 0.
 
@@ -16,7 +16,11 @@ Return a vortex blob with all data set to 0.
 # Returns
 A vortex blob instance with zero circulation, center, and radius.
 """
-Base.zero(blob::AbstractVortexBlob) = zero(typeof(blob))
+Base.zero(::T) where {T<:AbstractVortexBlob} = zero(T)
+
+function Base.zeros(::Type{T}, dims::Dims) where {T<:AbstractVortexBlob}
+    return [zero(T) for _ in CartesianIndices(dims)]
+end
 
 """
     blob_dimension(blob::AbstractVortexBlob)
