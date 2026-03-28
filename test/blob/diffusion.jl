@@ -55,6 +55,33 @@ end
         abs(blob_circulation(blobs[2, 2]))
 end
 
+@testsnippet TestDiffusion4DGrid begin
+    mesh = CartesianMesh((4, 4, 4, 4), 0.25)
+    mesh_size = nodes_per_axis(mesh)
+    mesh_spacing = node_spacing(mesh)
+
+    circulations = zeros(Float64, mesh_size)
+    circulations[3, 3, 3, 3] = 1.0
+
+    viscosity = pi * 10^-6
+    time = 0.0
+    time_step = 1 / (100 * exp(1))
+    time_scheme = VEM.ODE.RK4()
+end
+
+@testitem "Diffusing on a non-2D non-3D grid errors" setup = [TestDiffusion, TestDiffusion4DGrid] begin
+    # GIVEN
+
+    blobs = [Blob(circulation) for circulation in circulations]
+    blobs = reshape(blobs, mesh_size)
+
+    # WHEN / THEN
+
+    @test_throws ArgumentError diffusion!(
+        blobs, viscosity, mesh, time, time_step; time_scheme=time_scheme
+    )
+end
+
 @testsnippet TestDiffusionMultipleNonZeroBlob begin
     mesh = CartesianMesh((4, 4), 0.25)
     mesh_size = nodes_per_axis(mesh)

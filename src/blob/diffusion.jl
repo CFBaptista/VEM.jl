@@ -37,46 +37,8 @@ function laplacian_kernel(viscosity, mesh)
         corner = factor
 
         kernel = [corner edge corner; edge center edge; corner edge corner]
-    elseif mesh_dimension(mesh) == 3
-        factor = viscosity / (12 * spacing^2)
-
-        center = -60 * factor
-        edge = 8 * factor
-        face = 4 * factor
-        corner = factor
-
-        kernel = [
-            corner,
-            face,
-            corner,
-            face,
-            edge,
-            face,
-            corner,
-            face,
-            corner,
-            face,
-            edge,
-            face,
-            edge,
-            center,
-            edge,
-            face,
-            edge,
-            face,
-            corner,
-            face,
-            corner,
-            face,
-            edge,
-            face,
-            corner,
-            face,
-            corner,
-        ]
-        kernel = reshape(kernel, (3, 3, 3))
     else
-        error("Cartesian mesh dimension must be 2 or 3, not $(mesh_dimension(mesh)).")
+        throw(ArgumentError("Cartesian mesh dimension must be 2, not $(mesh_dimension(mesh))."))
     end
 
     return IF.centered(kernel)
