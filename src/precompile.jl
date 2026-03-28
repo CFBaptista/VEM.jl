@@ -13,9 +13,9 @@ PCT.@setup_workload begin
                 target = zero(SA.SVector{Dimension,Scalar})
 
                 zero(GaussianVortexBlob{Dimension,Scalar})
-                zeros(GaussianVortexBlob{Dimension,Scalar}, (2,))
-                zeros(GaussianVortexBlob{Dimension,Scalar}, (2, 2))
-                zeros(GaussianVortexBlob{Dimension,Scalar}, (2, 2, 2))
+                zeros(GaussianVortexBlob{Dimension,Scalar}, 2)
+                zeros(GaussianVortexBlob{Dimension,Scalar}, 2, 2)
+                zeros(GaussianVortexBlob{Dimension,Scalar}, 2, 2, 2)
 
                 blobs = [
                     GaussianVortexBlob(circulation, center, radius),
