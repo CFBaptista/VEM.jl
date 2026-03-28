@@ -3,6 +3,7 @@ module VEM
 import LinearAlgebra as LA
 
 import FillArrays as FA
+import ImageFiltering as IF
 import OrdinaryDiffEq as ODE
 import PrecompileTools as PCT
 import RecursiveArrayTools as RAT
@@ -60,6 +61,9 @@ export support_radius
 include("blob/redistribution.jl")
 export redistribution
 export interpolate_circulation
+
+include("blob/diffusion.jl")
+export diffusion!
 
 include("precompile.jl")
 

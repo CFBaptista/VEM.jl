@@ -17,7 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Computation of the field value induced by a vortex blob at a target: `induce`. ([#7])
 - Multi-threaded CPU implementation for the direct summation of field inductions by a collection of vortex blobs at a collection of targets: `direct_sum` and `direct_sum!`. ([#7])
 
-- Advection of a collection of vortex blobs: `advection!`. ([#5])
+- Advection of a collection of vortex blobs using explicit multi-stage time schemes: `advection!`. ([#5])
 
 - Concrete type for a Cartesian mesh: `CartesianMesh`. ([#9])
   
@@ -26,6 +26,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Interpolation of  blob circulations onto Cartesian mesh nodes: `interpolate_circulation`. ([#9])
 - Redistribution from olds blobs to new blobs at Cartesian mesh nodes: `redistribution`. ([#9])
+
+- Diffusion of blob circulations using explicit multi-stage time schemes and a finite-difference spatial discretization: `diffusion!`. ([#29])
 
 ### Changed
 
