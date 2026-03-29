@@ -29,6 +29,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Diffusion of blob circulations using explicit multi-stage time schemes and a finite-difference spatial discretization: `diffusion!`. ([#29])
 
+- Population control of vortex blobs by means of pruning based on circulation magnitude thresholding: `population_control!`. ([#30])
+
 ### Changed
 
 -
