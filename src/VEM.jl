@@ -65,6 +65,9 @@ export interpolate_circulation
 include("blob/diffusion.jl")
 export diffusion!
 
+include("blob/population_control.jl")
+export population_control!
+
 include("precompile.jl")
 
 end
