@@ -83,6 +83,7 @@ export running
 
 include("solver/lagrangian_flow_solver.jl")
 export LagrangianFlowSolver
+export evolve!
 
 include("precompile.jl")
 

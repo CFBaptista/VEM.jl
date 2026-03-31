@@ -39,7 +39,7 @@ mutable struct SimulationTime{Float<:AbstractFloat}
 end
 
 """
-    SimulationTime(time_step::Float, number_of_steps::Int; start_time::Float=0.0, current_step::Int=0)
+    SimulationTime(time_step::Float, number_of_steps::Int; start_time::Float=0.0, current_step::Int=0) where {Float<:AbstractFloat}
 
 A constructor for `SimulationTime` that initializes the structure with the given parameters.
 
@@ -54,7 +54,7 @@ An instance of `SimulationTime` initialized with the provided parameters.
 """
 function SimulationTime(
     time_step::Float, number_of_steps::Int; start_time::Float=0.0, current_step::Int=0
-)
+) where {Float<:AbstractFloat}
     return SimulationTime{Float}(start_time, time_step, number_of_steps, current_step)
 end
 

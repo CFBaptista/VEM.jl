@@ -56,7 +56,7 @@ struct NumericalConfiguration{
 end
 
 """
-    NumericalConfiguration(mesh_spacing::Float; advection_time_scheme::ODE.OrdinaryDiffEqCore.OrdinaryDiffEqAlgorithm, diffusion_time_scheme::ODE.OrdinaryDiffEqCore.OrdinaryDiffEqAlgorithm, redistribution_kernel::AbstractRedistributionKernel, overlap_ratio::Float, population_control_threshold::Float)
+    NumericalConfiguration(mesh_spacing::Float; advection_time_scheme::ODE.OrdinaryDiffEqCore.OrdinaryDiffEqAlgorithm, diffusion_time_scheme::ODE.OrdinaryDiffEqCore.OrdinaryDiffEqAlgorithm, redistribution_kernel::AbstractRedistributionKernel, overlap_ratio::Float, population_control_threshold::Float) where {Float<:AbstractFloat}
 
 A constructor for `NumericalConfiguration` that takes in the mesh spacing and optional parameters for the advection and diffusion time schemes, redistribution kernel, overlap ratio, and population control threshold. It returns an instance of `NumericalConfiguration` with the specified parameters.
 
@@ -75,7 +75,7 @@ function NumericalConfiguration(
     redistribution_kernel::AbstractRedistributionKernel=M4Prime(),
     overlap_ratio::Float=1.0,
     population_control_threshold::Float=1e-6,
-)
+) where {Float<:AbstractFloat}
     return NumericalConfiguration{
         typeof(advection_time_scheme),
         typeof(diffusion_time_scheme),
