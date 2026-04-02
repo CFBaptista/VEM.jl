@@ -9,7 +9,7 @@ end
 @testsnippet TestRedistributionPerfectOverlap begin
     # GIVEN
 
-    mesh = CartesianMesh((5, 5), 0.2)
+    mesh = CartesianMesh(zero(VEM.SA.SVector{2,Float64}), (5, 5), 0.2)
     kernel = Simple()
 
     circulation = 0.6530376028766707
@@ -128,7 +128,7 @@ end
 @testsnippet TestRedistributionOverResolved begin
     # GIVEN
 
-    mesh = CartesianMesh((7, 7), 1 / 7)
+    mesh = CartesianMesh(zero(VEM.SA.SVector{2,Float64}), (7, 7), 1 / 7)
     kernel = Simple()
 
     overlap_ratio = 1.5
@@ -194,7 +194,7 @@ end
 @testsnippet TestRedistributionUnderResolved begin
     # GIVEN
 
-    mesh = CartesianMesh((7, 7), 1 / 7)
+    mesh = CartesianMesh(zero(VEM.SA.SVector{2,Float64}), (7, 7), 1 / 7)
     kernel = Simple()
 
     overlap_ratio = 0.5

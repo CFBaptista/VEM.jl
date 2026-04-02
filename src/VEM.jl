@@ -68,6 +68,23 @@ export diffusion!
 include("blob/population_control.jl")
 export population_control!
 
+include("solver/flow_properties.jl")
+export FlowProperties
+
+include("solver/numerical_configuration.jl")
+export NumericalConfiguration
+
+include("solver/simulation_time.jl")
+export SimulationTime
+export current_time
+export end_time
+export advance!
+export running
+
+include("solver/lagrangian_flow_solver.jl")
+export LagrangianFlowSolver
+export evolve!
+
 include("precompile.jl")
 
 end
