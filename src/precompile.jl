@@ -36,11 +36,13 @@ PCT.@setup_workload begin
                 direct_sum(VorticityField(), blobs, targets[1])
                 direct_sum(VorticityField(), blobs, targets)
 
-                advection!(blobs, 0.0, 0.1; time_scheme=ODE.Euler())
-                advection!(blobs, 0.0, 0.1; time_scheme=ODE.Midpoint())
-                advection!(blobs, 0.0, 0.1; time_scheme=ODE.RK4())
+                advection!(blobs, zero(Scalar), one(Scalar) / 10; time_scheme=ODE.Euler())
+                advection!(blobs, zero(Scalar), one(Scalar) / 10; time_scheme=ODE.Midpoint())
+                advection!(blobs, zero(Scalar), one(Scalar) / 10; time_scheme=ODE.RK4())
 
-                mesh = CartesianMesh((10, 10), 0.1)
+                mesh = CartesianMesh(
+                    SA.SVector(zero(Scalar), zero(Scalar)), (10, 10), one(Scalar) / 10
+                )
 
                 redistribution(blobs, mesh, M4Prime())
             end

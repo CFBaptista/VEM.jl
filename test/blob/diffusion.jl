@@ -9,7 +9,7 @@
 end
 
 @testsnippet TestDiffusionSingleNonZeroBlob begin
-    mesh = CartesianMesh((4, 4), 0.25)
+    mesh = CartesianMesh(zero(VEM.SA.SVector{2,Float64}), (4, 4), 0.25)
     mesh_size = nodes_per_axis(mesh)
     mesh_spacing = node_spacing(mesh)
 
@@ -56,7 +56,7 @@ end
 end
 
 @testsnippet TestDiffusion4DGrid begin
-    mesh = CartesianMesh((4, 4, 4, 4), 0.25)
+    mesh = CartesianMesh(zero(VEM.SA.SVector{4,Float64}), (4, 4, 4, 4), 0.25)
     mesh_size = nodes_per_axis(mesh)
     mesh_spacing = node_spacing(mesh)
 
@@ -83,7 +83,7 @@ end
 end
 
 @testsnippet TestDiffusionMultipleNonZeroBlob begin
-    mesh = CartesianMesh((4, 4), 0.25)
+    mesh = CartesianMesh(zero(VEM.SA.SVector{2,Float64}), (4, 4), 0.25)
     mesh_size = nodes_per_axis(mesh)
     mesh_spacing = node_spacing(mesh)
 

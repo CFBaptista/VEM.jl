@@ -1,13 +1,15 @@
 """
-    CartesianMesh{Dimension,Scalar<:AbstractFloat}(cells_per_axis::NTuple{Dimension,Int}, spacing::Scalar)
+    CartesianMesh{Dimension,Scalar<:AbstractFloat}(lower_bound::SVector{Dimension,Scalar}, cells_per_axis::NTuple{Dimension,Int}, spacing::Scalar)
 
 A Cartesian mesh for vortex blob methods.
 
-# Argumentss
-- `cells_per_axis: The number of cells along each axis.
+# Arguments
+- `lower_bound`: The lower bound of the mesh.
+- `cells_per_axis`: The number of cells along each axis.
 - `spacing`: The spacing between nodes in the mesh.
 """
 struct CartesianMesh{Dimension,Scalar<:AbstractFloat}
+    lower_bound::SA.SVector{Dimension,Scalar}
     cells_per_axis::NTuple{Dimension,Int}
     spacing::Scalar
 end
@@ -92,7 +94,10 @@ function mesh_bounds(mesh::CartesianMesh)
     scalar = mesh_scalar(mesh)
     spacing = node_spacing(mesh)
 
-    bounds = Tuple((zero(scalar), n * spacing) for n in cells_per_axis(mesh))
+    bounds = Tuple(
+        (mesh.lower_bound[i], mesh.lower_bound[i] + n * spacing) for
+        (i, n) in enumerate(cells_per_axis(mesh))
+    )
 
     return bounds
 end
@@ -106,7 +111,7 @@ Get the nodes of the `mesh`.
 - `mesh`: The Cartesian mesh.
 
 # Returns
-The nodes of the Cartesian mesh as a matrix of static vectors.
+The nodes of the Cartesian mesh as an array of the same dimension as the mesh..
 """
 function mesh_nodes(mesh::CartesianMesh)
     dimension = mesh_dimension(mesh)
@@ -117,7 +122,7 @@ function mesh_nodes(mesh::CartesianMesh)
     nodes = zeros(SA.SVector{dimension,scalar}, size)
 
     Threads.@threads for index in CartesianIndices(size)
-        @inbounds nodes[index] = (index.I .- 1) .* spacing
+        @inbounds nodes[index] = mesh.lower_bound .+ (index.I .- 1) .* spacing
     end
 
     return nodes

@@ -1,7 +1,7 @@
 @testsnippet TestCartesianMesh2D begin
     # GIVEN
 
-    mesh = CartesianMesh((5, 5), 0.1)
+    mesh = CartesianMesh(zero(VEM.SA.SVector{2,Float64}), (5, 5), 0.1)
 
     expected_dimension = 2
     expected_scalar = Float64
@@ -88,7 +88,7 @@ end
 @testsnippet TestCartesianMesh3D begin
     # GIVEN
 
-    mesh = CartesianMesh((5, 5, 5), 0.1)
+    mesh = CartesianMesh(zero(VEM.SA.SVector{3,Float64}), (5, 5, 5), 0.1)
 
     expected_dimension = 3
     expected_scalar = Float64
