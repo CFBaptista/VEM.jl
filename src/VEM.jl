@@ -68,6 +68,10 @@ export diffusion!
 include("blob/population_control.jl")
 export population_control!
 
+include("fmm/tree.jl")
+export Tree
+export build_tree
+
 include("precompile.jl")
 
 end
