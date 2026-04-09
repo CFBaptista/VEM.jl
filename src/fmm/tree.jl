@@ -1,3 +1,27 @@
+"""
+    Tree{Dimension,Levels,Degree,Children,Float}
+
+A data structure representing the hierarchical tree used in the Fast Multipole Method (FMM).
+
+# Type Parameters
+- `Dimension`: The spatial dimension of the problem (e.g., 2 for 2D, 3 for 3D).
+- `Levels`: The total number of levels in the tree, including the root level.
+- `Degree`: The degree of the Chebyshev interpolation used for the multipole expansions.
+- `Children`: The number of children each cell has (must be equal to `2^Dimension`).
+- `Float`: The floating-point type used for calculations (e.g., `Float64`).
+
+# Fields
+- `level_length}`: The number of cells at each level of the tree.
+- `level_size`: The size of the grid at each level, represented as a tuple of integers for each dimension.
+- `cells_per_axis`: The number of cells along a single axis at each level.
+- `cell_size`: The physical size of each cell at each level.
+- `level_start`: The starting index in the storage arrays for each level.
+- `parent_index`: A vector mapping each cell's storage index to its parent cell's storage index.
+- `child_indices`: A vector mapping each cell's storage index to a tuple of its children's storage indices.
+- `interaction_indices`: A vector mapping each cell's storage index to a tuple of storage indices for its interaction list.
+- `chebyshev_nodes`: The Chebyshev (root) nodes used for interpolation.
+- `chebyshev_weights`: The barycentric weights associated with the Chebyshev nodes.
+"""
 struct Tree{Dimension,Levels,Degree,Children,Float<:AbstractFloat}
     level_length::NTuple{Levels,Int}
     level_size::NTuple{Levels,NTuple{Dimension,Int}}
@@ -48,6 +72,17 @@ dimension(tree::Tree) = dimension(typeof(tree))
 levels(::Type{<:Tree{Dimension,Levels,Float}}) where {Dimension,Levels,Float} = Levels
 levels(tree::Tree) = levels(typeof(tree))
 
+"""
+    build_tree(dimension::Int, levels::Int, degree::Int, domain_length::AbstractFloat)
+
+Constructs a hierarchical tree structure for the Fast Multipole Method (FMM) based on the specified parameters.
+
+# Arguments
+- `dimension`: The spatial dimension of the tree (e.g., 2 for 2D, 3 for 3D).
+- `levels`: The total number of levels in the tree, including the root level.
+- `degree`: The degree of Chebyshev polynomials used for the multipole expansions.
+- `domain_length`: The physical length of the domain along each axis (assumed to be the same for all axes).
+"""
 function build_tree(dimension::Int, levels::Int, degree::Int, domain_length::AbstractFloat)
     Float = typeof(domain_length)
 

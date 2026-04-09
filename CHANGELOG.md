@@ -31,6 +31,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Population control of vortex blobs by means of pruning based on circulation magnitude thresholding: `population_control!`. ([#30])
 
+- Black-box Fast Multipole method for reducing O(N^2) blob interactions to O(N). ([#33])
+
 ### Changed
 
 -
