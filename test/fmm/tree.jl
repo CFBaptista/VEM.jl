@@ -195,6 +195,29 @@ end
     @test_throws ArgumentError VEM.get_child_indices(tree, 4, 10) == (35, 36, 43, 44)
 end
 
+@testitem "Get interaction indices" setup = [TestTree] begin
+    # GIVEN
+
+    level = 3
+    linear_index = (1, 4, 5, 8, 13, 16)
+    expected_interaction_indices = (
+        (3, 4, 7, 8, 9, 10, 13, 14, 11, 12, 15, 16),
+        (1, 2, 5, 6, 9, 10, 13, 14, 11, 12, 15, 16),
+        (3, 4, 7, 8, 13, 14, 11, 12, 15, 16),
+        (1, 2, 5, 6, 9, 10, 13, 14, 15, 16),
+        (1, 2, 5, 6, 3, 4, 7, 8, 11, 12, 15, 16),
+        (1, 2, 5, 6, 3, 4, 7, 8, 9, 10, 13, 14),
+    )
+
+    # WHEN / THEN
+
+    for (index, expected_interaction) in zip(linear_index, expected_interaction_indices)
+        interaction_indices = VEM.get_interaction_indices(tree, level, index)
+
+        @test interaction_indices == expected_interaction
+    end
+end
+
 @testitem "Get indices associated with points" setup = [TestTree] begin
     # GIVEN
 
